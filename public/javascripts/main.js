@@ -9,6 +9,8 @@
     });
 
     function detectMouseMove(){
+        traceArray = [];
+        count = 0, timer = 0;
         $('#radar').mousemove(function(e) {  
             var xMouse=e.pageX;
             var yMouse=e.pageY;
