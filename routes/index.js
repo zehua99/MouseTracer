@@ -40,8 +40,8 @@ router.post('/verify',function(req, res, next) {
       })
       pipeline.incr("counter");
       pipeline.exec(function(err, values){
-          calculate(req.body.traceArray);
-          res.send("aaa").end();
+          var a = calculate(req.body.traceArray);
+          res.send(a.toString).end();
       });
    });
 });
@@ -77,7 +77,7 @@ router.get('/tests', function(req, res, next) {
             "y": "y",
             "time": "timer"
         };
-    console.log(n[1].x);
+    console.log(n.length);
     res.end();
 });
 

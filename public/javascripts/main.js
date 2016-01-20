@@ -1,4 +1,4 @@
-    var traceArray = {};
+    var traceArray = [];
     var count = 0, timer = 0, width = 300, height = 80, x, y;
     var origDiv = document.getElementById("orig");	
 
@@ -25,8 +25,8 @@
     }
 
     function saveTrace(x, y) {
-        if(count == 0)	setInterval("timer++", 1);
-        if(count % 20 == 0)	console.log(traceArray);
+        if(count == 0)
+            setInterval("timer++", 1);
         var id = count++;
         traceArray[id] = {
             "x": x,
