@@ -15,14 +15,14 @@ router.post('/verify',function(req, res, next) {
   var redis = new Redis();
   redis.get("counter", function(err, counter) {
       if (err) throw(err);
-      key = "trace:" + counter;
+      var key = "trace:" + counter;
       var pipeline = redis.pipeline();
       pipeline.hset(key, "trace", JSON.stringify(req.body.traceArray));
       pipeline.hset(key, "ip", req.ip);
       pipeline.hset(key, "timestamp", Date.now());
       pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
           var pipeline_1 = redis.pipeline();
-          if(!value){      // 问题出在这里
+          if(!value){
               // 在ip列表里面登记一下
               pipeline_1.hget("client_ip_set", "counter", function(err, value){
                   var pipeline_2 = redis.pipeline();
@@ -38,11 +38,10 @@ router.post('/verify',function(req, res, next) {
           pipeline_1.hincrby("client_ip:" + req.ip, "counter", 1);
           pipeline_1.exec();
       })
-      pipeline.incr("counter",function(err,value){
-          calculate(req.body.traceArray);
-      });
+      pipeline.incr("counter");
       pipeline.exec(function(err, values){
-          res.send(JSON.stringify(req.body.traceArray));
+          calculate(req.body.traceArray);
+          res.send("aaa").end();
       });
    });
 });
@@ -69,6 +68,17 @@ router.get('/delete/all/saved/traces', function(req, res, next) {
         });
     });
   });
+});
+
+router.get('/tests', function(req, res, next) {
+    var n = [];
+    n[1] = {
+            "x": "1",
+            "y": "y",
+            "time": "timer"
+        };
+    console.log(n[1].x);
+    res.end();
 });
 
 module.exports = router;
