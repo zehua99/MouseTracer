@@ -4,6 +4,7 @@ var Redis = require('ioredis');
 var async = require('async');
 var calculate = require('./calculate');
 var debug = require('debug');
+var spawn = require('child_process').spawn;
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -51,34 +52,23 @@ router.get('/delete/all/saved/traces', function(req, res, next) {
   redis.get("counter", function(err, counter) {
     for(var i = 0; i < counter; i++){
         redis.del("trace:" + i);
-        console.log(i);
+        console.log("trace:" + i);
     }
     redis.del("trace:" + counter);
     redis.set("counter", 0);
-    redis.hget("client_ip_set", "counter", function(err, value){
-        for(var i = 0; i < counter; i++){
-            redis.hget("client_ip_set", "ip_id:" + i, function(err, value){
+    redis.hget("client_ip_set", "counter", function(err, setCounter){
+        for(var n = 0; n < setCounter; n++){
+            redis.hget("client_ip_set", "ip_id:" + n, function(err, value){
                 redis.del("client_ip:" + value);
-                console.log(i);
+                console.log("ip_id:" + n);
             });
-            redis.hdel("client_ip_set", "ip_id:" + i);
+            redis.hdel("client_ip_set", "ip_id:" + n);
         }
         redis.hset("client_ip_set", "counter", 0, function(err,value){
             res.send("233").end();
         });
     });
   });
-});
-
-router.get('/tests', function(req, res, next) {
-    var n = [];
-    n[1] = {
-            "x": "1",
-            "y": "y",
-            "time": "timer"
-        };
-    console.log(n.length);
-    res.end();
 });
 
 module.exports = router;

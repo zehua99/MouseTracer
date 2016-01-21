@@ -1,11 +1,15 @@
     var traceArray = [];
-    var count = 0, timer = 0, width = 300, height = 80, x, y;
+    var count = 0, timer = 0, width = 256, height = 256, x, y;
     var origDiv = document.getElementById("orig");	
 
     $(document).ready(function(){
-        $("#orig").after("<input type='button' value='I'm not a robot' onclick='detectMouseMove()' style='position: absolute; z-index:100; left: 0px; top: 0px'>");
-        $("#orig").after("<div id='radar' style='background:green; width: " + width + "px; height: " + height + "px; position: absolute; top: 0px; left: 0px'>");
-        $("#orig").after("<input type='button' value='Submit' onclick='sendTraceArray()' style='position: absolute; z-index:100; left: " + width * 5 / 8 + "px; top: " + (height * 5 / 8) + "px'>");
+        $("#checkbox").click(function(){
+            if($("#checkbox").attr("checked")==true){
+                detectMouseMove();
+            }else{
+                $("#tooltip").html("hhh");
+            }
+        });
     });
 
     function detectMouseMove(){

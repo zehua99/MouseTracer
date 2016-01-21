@@ -1,8 +1,42 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.demo-card-event.mdl-card {
+  width: 256px;
+  height: 256px;
+  background: ghostwhite;
+}
+.demo-card-event > .mdl-card__actions {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.demo-card-event > .mdl-card__title {
+  align-items: flex-start;
+}
+/*.demo-card-event > .mdl-card__title > h4 {
+  margin-top: 0;
+}*/
+.demo-card-event > .mdl-card__actions {
+  display: flex;
+  box-sizing:border-box;
+  /*align-items: center;*/
+}
+.demo-card-event > .mdl-card__title,
+.demo-card-event > .mdl-card__actions,
+.demo-card-event > .mdl-card__actions > .mdl-button {
+  color: dimgrey;
 }
 
-a {
-  color: #00B7FF;
+.submit-box {
+  display: flex;
+  justify-content: space-between;
+}
+.second-button:nth-child(2) {
+  align-self: flex-end;
+}
+
+.tooltip-card.mdl-card {
+    display: flex;
+    width: 256px;
+    height: 30px;
+    min-height: 0px;
+    background: ghostwhite;
+    justify-content: center;
+    opacity: 1; 
 }

@@ -5,6 +5,23 @@
 </head>
 <body>
 	<div id="orig" style="width:0px; height:0px"/>
+    <link rel="stylesheet" href="stylesheets/material.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <div class="demo-card-event mdl-card mdl-shadow--2dp" id="card-box">
+        <div class="submit-box item mdl-card__title mdl-card--expand">
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox">
+                <input type="checkbox" id="checkbox" class="mdl-checkbox__input">
+                <span class="mdl-checkbox__label">我不是机器人</span>
+            </label>
+            <button class="second-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="sendTraceArray()" nth-child(2)>
+                验证
+            </button>
+        </div>
+    </div>
+    <div class="tooltip-card mdl-card mdl-shadow--2dp" id="tooltip-box">
+        <spam id="tooltip">哇哇哇</spam>
+    </div>    
 	<script src="javascripts/jquery-2.1.4.js"></script>
 	<script src="javascripts/main.js"></script>
+    <script src="javascripts/material.min.js"></script>
 </body>
