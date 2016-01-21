@@ -4,11 +4,12 @@
 
     $(document).ready(function(){
         $("#checkbox").click(function(){
-            if($("#checkbox").attr("checked")==true){
-                detectMouseMove();
-            }else{
-                $("#tooltip").html("hhh");
-            }
+            // if($("#checkbox").attr("checked")==true){
+            //     detectMouseMove();
+            // }else{
+            //     $("#tooltip").html("hhh");
+            // }
+            detectMouseMove();
         });
     });
 

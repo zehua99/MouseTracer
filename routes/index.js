@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Redis = require('ioredis');
-var async = require('async');
 var calculate = require('./calculate');
-var debug = require('debug');
-var spawn = require('child_process').spawn;
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
