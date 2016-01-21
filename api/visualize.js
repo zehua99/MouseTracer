@@ -3,7 +3,7 @@ var router = express.Router();
 var Redis = require('ioredis');
 
 router.get('/', function(req, res, next) {
-  res.render('visualize', { title: '可视化轨迹观察页面' });
+  res.sendFile('/public/visualize.html');
 });
 
 module.exports = router;
