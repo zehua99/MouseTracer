@@ -46,7 +46,7 @@
         allData.width = width;
         allData.height = height;
         $.ajax({
-            url: "/verify",
+            url: "/api/verify",
             type: 'POST',
             contentType: "application/json; charset=UTF-8",
             data: JSON.stringify(allData), 
