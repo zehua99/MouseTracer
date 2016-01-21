@@ -6,7 +6,7 @@ gulp.task("watch",function() {
         verbose: true,
         script: "./bin/www",
         ext: "js",
-        watch: "./",
+        watch: "./routes",
         env: {
             'DEBUG': 'mousetracer:*',
             'NODE_ENV': 'development'
