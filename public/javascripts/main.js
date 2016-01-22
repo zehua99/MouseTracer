@@ -1,15 +1,22 @@
     var traceArray = [];
-    var count = 0, timer = 0, width = 256, height = 256, x, y;
-    var origDiv = document.getElementById("orig");	
-
+    var count = 0, checkboxVal = 0, fade = "out", timer = 0, width = 256, height = 256, x, y;
+    
     $(document).ready(function(){
         $("#checkbox").click(function(){
-            // if($("#checkbox").attr("checked")==true){
-            //     detectMouseMove();
-            // }else{
-            //     $("#tooltip").html("hhh");
-            // }
-            detectMouseMove();
+            if(checkboxVal == 0){
+                detectMouseMove();
+                checkboxVal = 1;
+                console.log(checkboxVal);
+            }else{
+                checkboxVal = 0;
+                $("#tooltip-box").fadeIn(300, function(){
+                    fade = "in";
+                    setTimeout(function(){
+                        if(fade == "in")
+                            $("#tooltip-box").fadeOut(300);
+                    }, 1000);
+                });
+            }
         });
     });
 

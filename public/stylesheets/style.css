@@ -33,6 +33,20 @@
     height: 30px;
     min-height: 0px;
     background: ghostwhite;
-    justify-content: center;
-    opacity: 1; 
+    justify-content: center
 }
+
+.blank {
+    height: 5px
+}
+
+.checkbox-and-span {
+    display: flex;
+    flex-direction: row;
+    /*width: 124px;*/
+    align-items: center;
+    /*justify-content: flex-start*/
+}
+/*.checkbox-span{
+    width: 100px
+}*/
