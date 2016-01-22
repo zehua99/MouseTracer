@@ -6,9 +6,6 @@
 .demo-card-event > .mdl-card__actions {
   border-color: rgba(255, 255, 255, 0.2);
 }
-.demo-card-event > .mdl-card__title {
-  align-items: flex-start;
-}
 .demo-card-event > .mdl-card__actions {
   display: flex;
   box-sizing:border-box;
@@ -17,14 +14,6 @@
 .demo-card-event > .mdl-card__actions,
 .demo-card-event > .mdl-card__actions > .mdl-button {
   color: dimgrey;
-}
-
-.submit-box {
-  display: flex;
-  justify-content: space-between;
-}
-.second-button:nth-child(2) {
-  align-self: flex-end;
 }
 
 .tooltip-card.mdl-card {
@@ -40,13 +29,46 @@
     height: 5px
 }
 
-.checkbox-and-span {
-    display: flex;
-    flex-direction: row;
-    /*width: 124px;*/
-    align-items: center;
-    /*justify-content: flex-start*/
+.flex {
+  display: flex;
 }
-/*.checkbox-span{
-    width: 100px
-}*/
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-justify-start {
+  justify-content: flex-start;
+}
+
+.flex-justify-end {
+  justify-content: flex-end;
+}
+
+.flex-align-center {
+  align-items: center;
+  align-content: center;
+}
+
+.flex-align-stretch {
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.flex-align-end {
+  align-items: flex-end;
+  align-content: flex-end;
+}
+
+.flex-align-start {
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.flex-fill {
+  flex: 1;
+}
