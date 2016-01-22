@@ -11,7 +11,7 @@
                 <canvas id="canvas" width="256px" height="256px"></canvas>
             </div>
             <div class="request-moment">
-                <form action="drawMoment()">
+                <form action="#">
                     <div class="mdl-textfield mdl-js-textfield">
                         <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="moment">
                         <label class="mdl-textfield__label" for="moment">输入你想知道的毫秒数</label>
@@ -23,7 +23,28 @@
                     描图
                 </button>
             </div>
-        </div>    
+            <div class="three">
+                <form action="#">
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="start">
+                        <label class="mdl-textfield__label" for="moment">输入你想知道开始点的毫秒数</label>
+                        <span class="mdl-textfield__error">你输入的不是数！</span>
+                    </div>
+                </form><p>&nbsp</p>
+                <form action="#">
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="stop">
+                        <label class="mdl-textfield__label" for="moment">输入你想知道结束点的毫秒数</label>
+                        <span class="mdl-textfield__error">你输入的不是数！</span>
+                    </div>
+                </form>
+                <p>&nbsp</p>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="drawPeriod()">
+                    描图
+                </button>
+            </div>
+        </div>
+        
         <script src="../javascripts/jquery-2.1.4.js"></script>
         <script src="../javascripts/visualize.js"></script>
         <script src="../javascripts/material.min.js"></script>

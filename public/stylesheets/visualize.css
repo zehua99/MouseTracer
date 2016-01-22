@@ -9,7 +9,11 @@
 }
 .central {
     display: flex;
-    width: 500px;
+    width: 600px;
     flex-wrap: wrap;
     justify-content: center;
+}
+.three {
+    display: flex;
+    align-items: center;
 }
