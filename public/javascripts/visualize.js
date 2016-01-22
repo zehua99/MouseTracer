@@ -42,6 +42,7 @@ function drawPeriod(){
             for(var i = 0; i < periodSet.length; i++){
                 for(var n = 0; n < periodSet[i].length; n++){
                     let ctxt = canvas.getContext("2d");
+                    ctxt.strokeStyle = "#" + i.toString(16) + i.toString(16) + i.toString(16);
                     if(n == 0)
                         ctxt.moveTo(periodSet[i][n][0], periodSet[i][n][1]);
                     if(n > 0){

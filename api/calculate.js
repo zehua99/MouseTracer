@@ -19,7 +19,7 @@ module.exports = function(traceArray){
         sigmaPossibility += (traceArray[traceArray.length - 1].time - traceArray.length - 1) * Math.log(1 / (2 * Math.PI * stdDeviationOfES * stdDeviationOfAS));
     }
     sigmaPossibility *= -1;
-    console.log(sigmaPossibility);
-    console.log(traceArray);
+    // console.log(sigmaPossibility);
+    // console.log(traceArray);
     return sigmaPossibility;
 }

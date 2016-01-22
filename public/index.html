@@ -12,18 +12,19 @@
             <div class="checkbox-and-span">
                 <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox">
                     <input type="checkbox" id="checkbox" class="mdl-checkbox__input">
-                    <span class="mdl-checkbox__label"></span>
+                    <span class="mdl-checkbox__label">芝麻开门</span>
                 </label>
-                <span class="checkbox-span">我不是机器人</span>
             </div>
-            <button class="second-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="sendTraceArray()" nth-child(2)>
+            <button class="second-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="sendTraceArray()">
                 验证
             </button>
         </div>
     </div>
     <div class="blank"></div>
     <div class="tooltip-card mdl-card mdl-shadow--2dp" id="tooltip-box">
-        <span id="tooltip">哇哇哇</spam>
+        <div class="item mdl-card__title mdl-card--expand">
+            <span class="tooltip-text" id="tooltip">你难道是机器人!?</span>
+        </div>
     </div>    
 	<script src="javascripts/jquery-2.1.4.js"></script>
 	<script src="javascripts/main.js"></script>

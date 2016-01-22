@@ -35,6 +35,10 @@
     background: ghostwhite;
     justify-content: center
 }
+.tooltip-text > .mdl-card__actions{
+    display: flex;
+    box-sizing:border-box;
+}
 
 .blank {
     height: 5px
