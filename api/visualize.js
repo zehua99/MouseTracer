@@ -8,19 +8,18 @@ router.post('/moment', function(req, res, next) {
     // 要被这些timer, i, count搞疯了……
     var requestMoment = req.body.moment;
     var pointSet = [], count = 0;
-    var point = [];
     var redis = new Redis();
     redis.get("counter", function(err, counter) {
         for(let i = 0; i < counter; i++){
             redis.hget("trace:" + i, "trace", function(err, value){
-                var trace = JSON.parse(value);
-                // console.log(trace);
-                console.log(i);
-                var n = trace.length - 1;
+                let trace = JSON.parse(value);
+                console.log(trace);
+                let n = trace.length - 1;
                 if (trace[n].time < requestMoment)
                     n = -1;
                 while(n > -1){
                     if(trace[n].time <= requestMoment){
+                        let point = [];
                         point[0] = trace[n].x;
                         point[1] = trace[n].y;
                         pointSet[count++] = point;
