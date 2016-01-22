@@ -1,0 +1,15 @@
+.visualization-1-card.mdl-card {
+    display: flex;
+    width: 256px;
+    height: 256px;
+}
+.request-moment {
+    display: flex;
+    align-items: center;
+}
+.central {
+    display: flex;
+    width: 500px;
+    flex-wrap: wrap;
+    justify-content: center;
+}

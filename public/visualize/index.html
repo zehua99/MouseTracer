@@ -1,7 +1,31 @@
 <!Doctype html>
 <html>
-    <head />
+    <head>
+        <title>人民网舆论监控中心</title>
+        <link rel="stylesheet" href="../stylesheets/material.min.css">
+        <link rel="stylesheet" href="../stylesheets/visualize.css">
+    </head>
     <body>
-        aaa
+        <div class="central">
+            <div class="visualization-1-card mdl-card mdl-shadow--2dp">
+                <canvas id="canvas" width="256px" height="256px"></canvas>
+            </div>
+            <div class="request-moment">
+                <form action="drawMoment()">
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="moment">
+                        <label class="mdl-textfield__label" for="moment">输入你想知道的毫秒数</label>
+                        <span class="mdl-textfield__error">你输入的不是数！</span>
+                    </div>
+                </form>
+                <p>&nbsp</p>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="drawMoment()">
+                    描图
+                </button>
+            </div>
+        </div>    
+        <script src="../javascripts/jquery-2.1.4.js"></script>
+        <script src="../javascripts/visualize.js"></script>
+        <script src="../javascripts/material.min.js"></script>
     </body>
 </html>
