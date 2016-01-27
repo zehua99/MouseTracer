@@ -64,6 +64,8 @@ function sendTraceArray() {
                 data: JSON.stringify(allData), 
                 success: function(callBackData) {
                     console.log(callBackData);
+                    $("#tooltip").html('验证数据已发送! 请多验证几次吧(什么');
+                    fadeIO("in", "#tooltip-box");
                 }
             });
         } else {

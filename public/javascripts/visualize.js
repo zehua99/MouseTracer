@@ -39,15 +39,15 @@ function drawPeriod(){
             var periodSet = JSON.parse(callbackData);
             console.log(periodSet);
             for(let i = 0; i < periodSet.length; i++){
+                ctx.beginPath()
                 for(let n = 0; n < periodSet[i].length; n++){
-                    var ctxt = canvas.getContext("2d");
-                    ctxt.strokeStyle = "#" + i.toString(16) + i.toString(16) + i.toString(16);
+                    ctx.strokeStyle = "#" + i.toString(16) + i.toString(16) + i.toString(16);
                     if(n == 0)
-                        ctxt.moveTo(periodSet[i][n][0], periodSet[i][n][1]);
+                        ctx.moveTo(periodSet[i][n][0], periodSet[i][n][1]);
                     if(n > 0){
-                        ctxt.lineTo(periodSet[i][n][0], periodSet[i][n][1]);
+                        ctx.lineTo(periodSet[i][n][0], periodSet[i][n][1]);
                     }
-                    ctxt.stroke();
+                    ctx.stroke();
                 }
             }
         }
