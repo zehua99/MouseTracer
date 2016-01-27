@@ -48,7 +48,7 @@ function saveTrace(x, y) {
 
 function sendTraceArray() {
     if(sent == 1){
-        $("#tooltip").html('矮油，你急什么');
+        $("#tooltip").html('如果能再多重复几次你之前的操作就再好不过了');
         fadeIO("in", "#tooltip-box");
     } else {
         if(checkboxVal == 1){

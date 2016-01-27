@@ -37,8 +37,7 @@ router.post('/moment', function(req, res, next) {
 router.post('/period', function(req, res, next) {
     var start = req.body.start;
     var stop = req.body.stop;
-    console.log(req.body);
-    var periodSet = [];
+    var periodSet = [], setCounter = 0;
     var redis = new Redis();
     redis.get("counter", function(err, counter) {
         for(let i = 0; i < counter; i++){
@@ -66,9 +65,11 @@ router.post('/period', function(req, res, next) {
                     tempPoint[0] = trace[p + traceStart].x;
                     tempPoint[1] = trace[p + traceStart].y;
                     tempSet[p] = tempPoint;
-                    console.log(tempPoint);
                 }
-                periodSet[i] = tempSet;
+                if(traceStop != null && traceStart != null && traceStart != traceStop){
+                    periodSet[setCounter++] = tempSet;
+                    console.log(traceStart, traceStop);
+                }
                 if(i == counter - 1){
                     res.send(JSON.stringify(periodSet));
                 }
