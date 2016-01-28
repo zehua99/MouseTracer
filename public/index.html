@@ -9,7 +9,7 @@
 	<div id="orig" style="width:0px; height:0px"/>
     <div class="demo-card-event mdl-card mdl-shadow--2dp" id="radar">
         <div class="flex flex-column flex-align-stretch item mdl-card__title mdl-card--expand">
-            <div class="flex flex-row flex-align-start flex-justify-start flex-fill">
+            <div class="flex flex-row flex-align-start flex-justify-start flex-fill" id="verification_checkbox">
                 <div>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox">
                     <input type="checkbox" id="checkbox" class="mdl-checkbox__input">
@@ -17,7 +17,7 @@
                 </div>
                 <span class="flex-fill mdl-checkbox__label">我不是机器人</span>
             </div>
-            <div class="flex flex-column flex-align-end">
+            <div class="flex flex-column flex-align-end" id="verification_button">
                 <button class="second-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="sendTraceArray()">
                 验证
                 </button>
@@ -31,6 +31,7 @@
         </div>
     </div>
 	<script src="javascripts/jquery-2.1.4.js"></script>
+    <script src="javascripts/isMobile.js"></script>
 	<script src="javascripts/main.js"></script>
     <script src="javascripts/material.min.js"></script>
 </body>

@@ -5,6 +5,11 @@ var count = 0, checkboxVal = 0, fade = "out", fadeUid = 0;
 var sent = 0, timer = 0, width = 256, height = 256, x, y;
 
 $(document).ready(function(){
+    if(isMobile.any == 1){
+        $("#verification_button").remove();
+        $("#verification_checkbox").empty();
+        $("#verification_checkbox").prepend("<p>手机用户不能用噢</p>");
+    }
     $("#tooltip-box").fadeOut(0);
     $("#checkbox").click(function(){
         if(checkboxVal == 0){
