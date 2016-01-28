@@ -1,11 +1,9 @@
-"use strict";
-
 var traceArray = [];
 var count = 0, checkboxVal = 0, fade = "out", fadeUid = 0;
 var sent = 0, timer = 0, width = 256, height = 256, x, y;
 
 $(document).ready(function(){
-    if(isMobile.any == 1){
+    if(isMobile.any){
         $("#verification_button").remove();
         $("#verification_checkbox").empty();
         $("#verification_checkbox").prepend("<p>手机用户不能用噢</p>");
@@ -56,7 +54,7 @@ function sendTraceArray() {
         $("#tooltip").html('如果能再多重复几次你之前的操作就再好不过了');
         fadeIO("in", "#tooltip-box");
     } else {
-        if(checkboxVal == 1){
+        if(checkboxVal == 1 && !isMobile.any){
             sent = 1;
             var allData = new Object();
             allData.traceArray = traceArray;
@@ -84,24 +82,28 @@ function fadeIO(io, id){
     if(io == "in"){
         $(id).fadeIn(300, function(){
             fade = "in";
-            let myFadeUid = ++fadeUid;
-            setTimeout(function(){
-                if(fade == "in" && myFadeUid == fadeUid){
-                    $(id).fadeOut(300);
-                    fade = "out";
-                }
-            }, 1500);
+            (function(){
+                var myFadeUid = ++fadeUid;
+                setTimeout(function(){
+                    if(fade == "in" && myFadeUid == fadeUid){
+                        $(id).fadeOut(300);
+                        fade = "out";
+                    }
+                }, 1500);
+            })();
         });
     } else {
         $(id).fadeOut(300, function(){
             fade = "out";
-            let myFadeUid = ++fadeUid;
-            setTimeout(function(){
-                if(fade == "out" && myFadeUid == fadeUid){
-                    $(id).fadeIn(300);
-                    fade = "in";
-                }
-            }, 1500);
+            (function(){
+                var myFadeUid = ++fadeUid;
+                setTimeout(function(){
+                    if(fade == "out" && myFadeUid == fadeUid){
+                        $(id).fadeIn(300);
+                        fade = "in";
+                    }
+                }, 1500);
+            })();
         });
     }
 }
