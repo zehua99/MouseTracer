@@ -19,7 +19,6 @@
 .tooltip-card.mdl-card {
     display: flex;
     width: 256px;
-    height: 30px;
     min-height: 0px;
     background: ghostwhite;
     justify-content: center

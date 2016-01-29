@@ -1,5 +1,5 @@
 var traceArray = [];
-var count = 0, checkboxVal = 0, fade = "out", fadeUid = 0;
+var count = 0, checkboxVal = 0, fade = ["out", "out"], fadeUid = [0, 0];
 var sent = 0, timer = 0, width = 256, height = 256, x, y;
 
 $(document).ready(function(){
@@ -9,6 +9,7 @@ $(document).ready(function(){
         $("#verification_checkbox").prepend("<p>手机用户不能用噢</p>");
     }
     $("#tooltip-box").fadeOut(0);
+    $("#callback-box").fadeOut(0);
     $("#checkbox").click(function(){
         if(checkboxVal == 0){
             detectMouseMove();
@@ -16,7 +17,7 @@ $(document).ready(function(){
         }else{
             checkboxVal = 0;
             $("#tooltip").html('你难道是机器人!?');
-            fadeIO("in", "#tooltip-box");
+            fadeIO("in", "#tooltip-box", 0);
             sent = 0;
         }
     });
@@ -52,7 +53,7 @@ function saveTrace(x, y) {
 function sendTraceArray() {
     if(sent == 1){
         $("#tooltip").html('如果能再多重复几次你之前的操作就再好不过了');
-        fadeIO("in", "#tooltip-box");
+        fadeIO("in", "#tooltip-box", 0);
     } else {
         if(checkboxVal == 1 && !isMobile.any){
             sent = 1;
@@ -67,40 +68,42 @@ function sendTraceArray() {
                 data: JSON.stringify(allData), 
                 success: function(callBackData) {
                     console.log(callBackData);
-                    $("#tooltip").html('验证数据已发送! 请多验证几次吧(什么');
-                    fadeIO("in", "#tooltip-box");
+                    $("#tooltip").html('客官请多验证几次吧(什么');
+                    fadeIO("in", "#tooltip-box", 0);
+                    $("#callback-massage").html(callBackData);
+                    fadeIO("in", "#callback-box", 1);
                 }
             });
         } else {
             $("#tooltip").html('喊了"芝麻开门"我才开门!');
-            fadeIO("in", "#tooltip-box");
+            fadeIO("in", "#tooltip-box", 0);
         }
     }
 }
 
-function fadeIO(io, id){
+function fadeIO(io, id, uid){
     if(io == "in"){
         $(id).fadeIn(300, function(){
-            fade = "in";
+            fade[uid] = "in";
             (function(){
-                var myFadeUid = ++fadeUid;
+                var myFadeUid = ++fadeUid[uid];
                 setTimeout(function(){
-                    if(fade == "in" && myFadeUid == fadeUid){
+                    if(fade[uid] == "in" && myFadeUid == fadeUid[uid]){
                         $(id).fadeOut(300);
-                        fade = "out";
+                        fade[uid] = "out";
                     }
                 }, 1500);
             })();
         });
     } else {
         $(id).fadeOut(300, function(){
-            fade = "out";
+            fade[uid] = "out";
             (function(){
-                var myFadeUid = ++fadeUid;
+                var myFadeUid = ++fadeUid[uid];
                 setTimeout(function(){
-                    if(fade == "out" && myFadeUid == fadeUid){
+                    if(fade[uid] == "out" && myFadeUid == fadeUid[uid]){
                         $(id).fadeIn(300);
-                        fade = "in";
+                        fade[uid] = "in";
                     }
                 }, 1500);
             })();

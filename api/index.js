@@ -46,7 +46,7 @@ router.post('/verify',function(req, res, next) {
             })
             pipeline.incr("counter");
             pipeline.exec(function(err, values){
-                res.send(calculate(euclideanStep, req.body.traceArray).toString).end();
+                res.send("该鼠标轨迹的k值为" + calculate(euclideanStep, req.body.traceArray)).end();
             });
         });
     }
