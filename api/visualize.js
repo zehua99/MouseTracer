@@ -4,6 +4,23 @@ var express = require('express');
 var router = express.Router();
 var Redis = require('ioredis');
 
+router.get('/all', function(req, res, next) {
+   var redis = new Redis();
+   var set = [];
+   redis.get("counter", function(err, counter) {
+       for(let i = 0; i < counter; i++){
+           redis.hgetall("trace:" + i, function(err, trace) {
+              set[i] = trace; 
+              if(i == counter - 1){
+                  res.send(JSON.stringify(set));
+              }
+              console.log(trace);
+           });
+           console.log(i);
+       }
+   }) 
+});
+
 router.post('/moment', function(req, res, next) {
     var requestMoment = req.body.moment;
     var pointSet = [], count = 0;
