@@ -23,7 +23,7 @@ router.post('/verify',function(req, res, next) {
             var pipeline = redis.pipeline();
             pipeline.hset(key, "trace", JSON.stringify(req.body.traceArray));
             pipeline.hset(key, "ip", req.ip);
-            pipeline.hset(key, "req_headers", req.headers);
+            pipeline.hset(key, "req_headers", JSON.stringify(req.headers));
             pipeline.hset(key, "timestamp", Date.now());
             pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
                 var pipeline_1 = redis.pipeline();
