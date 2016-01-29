@@ -14,9 +14,7 @@ router.get('/all', function(req, res, next) {
               if(i == counter - 1){
                   res.send(JSON.stringify(set));
               }
-              console.log(trace);
            });
-           console.log(i);
        }
    }) 
 });

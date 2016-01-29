@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Redis = require('ioredis');
+var preCheck = require('./preliminaryCheck');
 var calculate = require('./calculate');
 
 router.get('/', function(req, res, next) {
@@ -10,37 +11,45 @@ router.get('/', function(req, res, next) {
 //  HLEN获得字段数量的方式不太安全…… 还是设counter比较好
 //  TODO: 把pipeline改成multi以保证安全性
 router.post('/verify',function(req, res, next) {
-  var redis = new Redis();
-  redis.get("counter", function(err, counter) {
-      if (err) throw(err);
-      var key = "trace:" + counter;
-      var pipeline = redis.pipeline();
-      pipeline.hset(key, "trace", JSON.stringify(req.body.traceArray));
-      pipeline.hset(key, "ip", req.ip);
-      pipeline.hset(key, "timestamp", Date.now());
-      pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
-          var pipeline_1 = redis.pipeline();
-          if(!value){
-              // 在ip列表里面登记一下
-              pipeline_1.hget("client_ip_set", "counter", function(err, value){
-                  var pipeline_2 = redis.pipeline();
-                  pipeline_2.hset("client_ip_set", "ip_id:" + value, req.ip);
-                  pipeline_2.hincrby("client_ip_set", "counter", 1);
-                  pipeline_2.exec();
-              });
-              // 初始化
-              pipeline_1.hset("client_ip:" + req.ip, "counter", 0);
-              value = 0;
-          }
-          pipeline_1.hset("client_ip:" + req.ip, "key:" + value, "trace:" + counter);
-          pipeline_1.hincrby("client_ip:" + req.ip, "counter", 1);
-          pipeline_1.exec();
-      })
-      pipeline.incr("counter");
-      pipeline.exec(function(err, values){
-          res.send(calculate(req.body.traceArray).toString).end();
-      });
-   });
+    var euclideanStep = preCheck(req.body.traceArray);
+    if(!euclideanStep){
+        console.log("啊噢");
+        res.send("Something wrong.").end();
+    } else {
+        var redis = new Redis();
+        redis.get("counter", function(err, counter) {
+            if (err) throw(err);
+            var key = "trace:" + counter;
+            var pipeline = redis.pipeline();
+            pipeline.hset(key, "trace", JSON.stringify(req.body.traceArray));
+            pipeline.hset(key, "ip", req.ip);
+            pipeline.hset(key, "req_headers", req.headers);
+            pipeline.hset(key, "timestamp", Date.now());
+            pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
+                var pipeline_1 = redis.pipeline();
+                if(!value){
+                    // 在ip列表里面登记一下
+                    pipeline_1.hget("client_ip_set", "counter", function(err, value){
+                        var pipeline_2 = redis.pipeline();
+                        pipeline_2.hset("client_ip_set", "ip_id:" + value, req.ip);
+                        pipeline_2.hincrby("client_ip_set", "counter", 1);
+                        pipeline_2.exec();
+                    });
+                    // 初始化
+                    pipeline_1.hset("client_ip:" + req.ip, "counter", 0);
+                    value = 0;
+                }
+                pipeline_1.hset("client_ip:" + req.ip, "key:" + value, "trace:" + counter);
+                pipeline_1.hset(key, "ip_key", "key:" + value);
+                pipeline_1.hincrby("client_ip:" + req.ip, "counter", 1);
+                pipeline_1.exec();
+            })
+            pipeline.incr("counter");
+            pipeline.exec(function(err, values){
+                res.send(calculate(euclideanStep, req.body.traceArray).toString).end();
+            });
+        });
+    }
 });
 
 router.get('/delete/all/saved/traces', function(req, res, next) {
@@ -65,6 +74,6 @@ router.get('/delete/all/saved/traces', function(req, res, next) {
         });
     });
   });
-});
+});                 
 
 module.exports = router;
