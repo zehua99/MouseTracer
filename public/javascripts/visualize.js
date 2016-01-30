@@ -53,3 +53,27 @@ function drawPeriod(){
         }
     });
 }
+
+function drawVelocity(){
+    canvas = document.getElementById("velocity");
+    var ctx = new FlatSystem(canvas.getContext('2d'), 2048, 1024);
+    ctx.init();
+    var json = {
+        "traceId": $("#velocity_id").val()
+    };
+    $.ajax({
+        url: "/visualize/velocity",
+        type: 'POST',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(json), 
+        success: function(callbackData) {
+            var dataSet = JSON.parse(callbackData);
+            for(var i = 0; i < dataSet.length; i++){
+                if(i == 0)
+                    ctx.printLine(dataSet[i][2] * 2, dataSet[i][0] * 500, 0, 0);
+                else
+                    ctx.printLine(dataSet[i][2] * 2, dataSet[i][0] * 500, dataSet[i][1] * 2, dataSet[i-1][0] * 500);
+            }
+        }
+    });
+}

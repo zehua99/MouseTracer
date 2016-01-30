@@ -7,8 +7,12 @@
     </head>
     <body>
         <div class="central">
-            <div class="visualization-1-card mdl-card mdl-shadow--2dp">
-                <canvas id="canvas" width="256px" height="256px"></canvas>
+            <div class="visualization-div">
+                <div class="visualization-1-card mdl-card mdl-shadow--2dp">
+                    <canvas id="canvas" width="256px" height="256px"></canvas>
+                </div>
+                <div style="width:10px"></div>
+                
             </div>
             <div class="request-moment">
                 <form action="#">
@@ -43,10 +47,27 @@
                     描图
                 </button>
             </div>
+            <div class="four">
+                <form action="#">
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="velocity_id">
+                        <label class="mdl-textfield__label" for="moment">输入你想知道轨迹速度的轨迹标号</label>
+                        <span class="mdl-textfield__error">你输入的不是数！</span>
+                    </div>
+                </form>
+                <p>&nbsp</p>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="drawVelocity()">
+                    描图
+                </button>
+            </div>
+            <div class="visualization-2-card mdl-card mdl-shadow--2dp">
+                <canvas id="velocity" width="2048px" height="1024px"></canvas>
+            </div>
         </div>
         
         <script src="../javascripts/jquery-2.1.4.js"></script>
-        <script src="../javascripts/visualize.js"></script>
         <script src="../javascripts/material.min.js"></script>
+        <script src="../javascripts/FlatSystem.class.js"></script>
+        <script src="../javascripts/visualize.js"></script>
     </body>
 </html>

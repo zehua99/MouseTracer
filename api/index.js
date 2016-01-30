@@ -5,7 +5,7 @@ var preCheck = require('./preliminaryCheck');
 var calculate = require('./calculate');
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
 });
 
 //  HLEN获得字段数量的方式不太安全…… 还是设counter比较好
@@ -13,9 +13,10 @@ router.get('/', function(req, res, next) {
 router.post('/verify',function(req, res, next) {
     var euclideanStep = preCheck(req.body.traceArray);
     if(!euclideanStep){
-        console.log("啊噢");
         res.send("Something wrong.").end();
     } else {
+        var ansOfCalcu = calculate(euclideanStep, req.body.traceArray);
+        ansOfCalcu[2] = euclideanStep;
         var redis = new Redis();
         redis.get("counter", function(err, counter) {
             if (err) throw(err);
@@ -25,6 +26,7 @@ router.post('/verify',function(req, res, next) {
             pipeline.hset(key, "ip", req.ip);
             pipeline.hset(key, "req_headers", JSON.stringify(req.headers));
             pipeline.hset(key, "timestamp", Date.now());
+            pipeline.hset(key, "details", JSON.stringify(ansOfCalcu));
             pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
                 var pipeline_1 = redis.pipeline();
                 if(!value){
@@ -46,34 +48,34 @@ router.post('/verify',function(req, res, next) {
             })
             pipeline.incr("counter");
             pipeline.exec(function(err, values){
-                res.send("这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的k值为" + calculate(euclideanStep, req.body.traceArray)).end();
+                res.send("这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的k值为" + ansOfCalcu[0]).end();
             });
         });
     }
 });
 
 router.get('/delete/all/saved/traces', function(req, res, next) {
-  var redis = new Redis();
-  redis.get("counter", function(err, counter) {
-    for(var i = 0; i < counter; i++){
-        redis.del("trace:" + i);
-        console.log("trace:" + i);
-    }
-    redis.del("trace:" + counter);
-    redis.set("counter", 0);
-    redis.hget("client_ip_set", "counter", function(err, setCounter){
-        for(var n = 0; n < setCounter; n++){
-            redis.hget("client_ip_set", "ip_id:" + n, function(err, value){
-                redis.del("client_ip:" + value);
-                console.log("ip_id:" + n);
-            });
-            redis.hdel("client_ip_set", "ip_id:" + n);
+    var redis = new Redis();
+    redis.get("counter", function(err, counter) {
+        for(var i = 0; i < counter; i++){
+            redis.del("trace:" + i);
+            console.log("trace:" + i);
         }
-        redis.hset("client_ip_set", "counter", 0, function(err,value){
-            res.send("233").end();
+        redis.del("trace:" + counter);
+        redis.set("counter", 0);
+        redis.hget("client_ip_set", "counter", function(err, setCounter){
+            for(var n = 0; n < setCounter; n++){
+                redis.hget("client_ip_set", "ip_id:" + n, function(err, value){
+                    redis.del("client_ip:" + value);
+                    console.log("ip_id:" + n);
+                });
+                redis.hdel("client_ip_set", "ip_id:" + n);
+            }
+            redis.hset("client_ip_set", "counter", 0, function(err,value){
+                res.send("233").end();
+            });
         });
     });
-  });
 });                 
 
 module.exports = router;

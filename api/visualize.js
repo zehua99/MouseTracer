@@ -19,6 +19,27 @@ router.get('/all', function(req, res, next) {
    }) 
 });
 
+router.post('/velocity', function(req, res, next) {
+    var redis = new Redis();
+    redis.hgetall("trace:" + (req.body.traceId - 1), function(err, value) {
+        if(!value.trace) {
+            res.send("木有这条轨迹啊").end();
+        } else {
+            var trace = JSON.parse(value.trace);
+            var euclideanStep = JSON.parse(value.details)[2];
+            var velSet = [0], callbackSet = [[0, 0, 0]];
+            for(var i = 0; i < euclideanStep.length; i++){
+                if(trace[i+1].time == trace[i].time)
+                    velSet[i+1] = velSet[i];
+                else
+                    velSet[i+1] = euclideanStep[i] / (trace[i+1].time - trace[i].time);
+                callbackSet[i+1] = [velSet[i+1], trace[i].time, trace[i+1].time];
+            }
+            res.send(JSON.stringify(callbackSet)).end();
+        }
+    })
+});
+
 router.post('/moment', function(req, res, next) {
     var requestMoment = req.body.moment;
     var pointSet = [], count = 0;

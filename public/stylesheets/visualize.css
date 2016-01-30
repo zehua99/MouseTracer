@@ -1,7 +1,16 @@
+.visualization-div {
+    display: flex;
+    flex-direction: row
+}
 .visualization-1-card.mdl-card {
     display: flex;
     width: 256px;
     height: 256px;
+}
+.visualization-2-card.mdl-card {
+    display: flex;
+    width: 2048px;
+    height: 1024px;
 }
 .request-moment {
     display: flex;
@@ -10,11 +19,16 @@
 .central {
     display: flex;
     flex-direction: column; 
-    width: 1000px;
+    width: 2304px;
     flex-wrap: wrap;
     justify-content: center;
 }
 .three {
+    display: flex;
+    align-items: center;
+    flex-direction: raw
+}
+.four {
     display: flex;
     align-items: center;
     flex-direction: raw
