@@ -7,11 +7,6 @@
     width: 256px;
     height: 256px;
 }
-.visualization-2-card.mdl-card {
-    display: flex;
-    width: 2048px;
-    height: 1024px;
-}
 .request-moment {
     display: flex;
     align-items: center;
@@ -19,7 +14,7 @@
 .central {
     display: flex;
     flex-direction: column; 
-    width: 2304px;
+    width: 1024px;
     flex-wrap: wrap;
     justify-content: center;
 }
