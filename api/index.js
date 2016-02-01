@@ -12,50 +12,54 @@ router.get('/', function(req, res, next) {
 
 //  HLEN获得字段数量的方式不太安全…… 还是设counter比较好
 //  TODO: 把pipeline改成multi以保证安全性
-router.post('/verify',function(req, res, next) {
-    var euclideanStep = preCheck(req.body.traceArray, req.body.width, req.body.height);
+router.post('/verify', function(req, res, next) {
+    var callbackSet = preCheck(req.body.traceArray, req.body.width, req.body.height);
+    var euclideanStep = callbackSet[0];
+    var traceArray = callbackSet[1];
     if(!euclideanStep){
         res.send("Something wrong.").end();
     } else {
-        var ansOfCalcu = traceInfo(euclideanStep, req.body.traceArray);
-        ansOfCalcu[0] = euclideanStep;
+        var ansOfCalcu = traceInfo(euclideanStep, traceArray);
         var redis = new Redis();
-        redis.get("counter", function(err, counter) {
-            if (err) throw(err);
-            var key = "trace:" + counter;
-            var pipeline = redis.pipeline();
-            pipeline.hset(key, "trace", JSON.stringify(req.body.traceArray))
-                    .hset(key, "ip", req.ip)
-                    .hset(key, "req_headers", JSON.stringify(req.headers))
-                    .hset(key, "timestamp", Date.now())
-                    .hset(key, "details", JSON.stringify(ansOfCalcu));
-            pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
-                var pipeline_1 = redis.pipeline();
-                if(!value){
-                    // 在ip列表里面登记一下
-                    pipeline_1.hget("client_ip_set", "counter", function(err, value){
-                        var pipeline_2 = redis.pipeline();
-                        pipeline_2.hset("client_ip_set", "ip_id:" + value, req.ip)
-                                  .hincrby("client_ip_set", "counter", 1)
-                                  .exec();
-                    });
-                    // 初始化
-                    pipeline_1.hset("client_ip:" + req.ip, "counter", 0);
-                    value = 0;
-                }
-                pipeline_1.hset("client_ip:" + req.ip, "key:" + value, "trace:" + counter)
-                          .hset(key, "ip_key", "key:" + value)
-                          .hincrby("client_ip:" + req.ip, "counter", 1)
-                          .exec();
+        checkIP(ansOfCalcu, req.ip, redis, function(err, ansOfCheckIP) {
+            console.log(ansOfCheckIP);
+            redis.get("counter", function(err, counter) {
+                if (err) throw(err);
+                var key = "trace:" + counter;
+                var pipeline = redis.pipeline();
+                pipeline.hset(key, "trace", JSON.stringify(traceArray))
+                        .hset(key, "ip", req.ip)
+                        .hset(key, "req_headers", JSON.stringify(req.headers))
+                        .hset(key, "timestamp", Date.now())
+                        .hset(key, "details", JSON.stringify(ansOfCalcu));
+                pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
+                    var pipeline_1 = redis.pipeline();
+                    if(!value){
+                        // 在ip列表里面登记一下
+                        pipeline_1.hget("client_ip_set", "counter", function(err, value){
+                            var pipeline_2 = redis.pipeline();
+                            pipeline_2.hset("client_ip_set", "ip_id:" + value, req.ip)
+                                      .hincrby("client_ip_set", "counter", 1)
+                                      .exec();
+                        });
+                        // 初始化
+                        pipeline_1.hset("client_ip:" + req.ip, "counter", 0);
+                        value = 0;
+                    }
+                    pipeline_1.hset("client_ip:" + req.ip, "key:" + value, "trace:" + counter)
+                              .hset(key, "ip_key", "key:" + value)
+                              .hincrby("client_ip:" + req.ip, "counter", 1)
+                              .exec();
+                });
+                pipeline.incr("counter")
+                        .exec(function(err, values){
+                    // 开始验证
+                    
+                    
+                    res.send("这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的欧氏距离方差为" + ansOfCalcu[2]).end();
+                });
             });
-            pipeline.incr("counter")
-                    .exec(function(err, values){
-                // 开始验证
-                
-                
-                res.send("这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的欧氏距离方差为" + ansOfCalcu[2]).end();
-            });
-        });
+        });  
     }
 });
 
@@ -82,11 +86,6 @@ router.get('/delete/all/saved/traces', function(req, res, next) {
             });
         });
     });
-});    
-
-router.get('/test', function(req, res, next) {
-    var redis = new Redis();
-    checkIP(req.ip, redis);
-});                
+});             
 
 module.exports = router;
