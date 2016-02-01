@@ -11,9 +11,8 @@ router.get('/all', function(req, res, next) {
        for(let i = 0; i < counter; i++){
            redis.hgetall("trace:" + i, function(err, trace) {
               set[i] = trace; 
-              if(i == counter - 1){
+              if(i == counter - 1)
                   res.send(JSON.stringify(set));
-              }
            });
        }
    }) 
