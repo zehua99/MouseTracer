@@ -1,8 +1,8 @@
 // callbackData = [ES, AS, ES标准差, AS标准差, ES总和, AS总和, 总时长, 总长];
 
 module.exports = function(trace1, trace2){
-    var sigmaPossibilityOfBoth = Math.log(1), sqrt2Pi = Math.sqrt(2 * Math.PI);
-    var sigmaPossibility1 = Math.log(1), sigmaPossibility2 = Math.log(1);
+    var sigmaPossibilityOfBoth = Math.log(Math.pow(10, 8)), sqrt2Pi = Math.sqrt(2 * Math.PI);
+    var sigmaPossibility1 = Math.log(Math.pow(10, 8)), sigmaPossibility2 = Math.log(Math.pow(10, 8));
     var stdDeviationOfESOfBoth = 0;
     var stdDeviationOfASOfBoth = 0;
     var averageES = (trace1[4] + trace2[4]) / (trace1[6] + trace2[6]);
