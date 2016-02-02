@@ -15,4 +15,4 @@ module.exports = function(euclideanStep, traceArray){
     // console.log("stdDoES:" + stdDeviationOfES, "stdDoAS:" + stdDeviationOfAS);
     var callbackData = [euclideanStep, angleStep, stdDeviationOfES, stdDeviationOfAS, sumOfES, sumOfAS, traceArray[traceArray.length - 1].time - 1];
     return callbackData;
-}
+} 

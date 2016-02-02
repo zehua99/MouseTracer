@@ -1,6 +1,6 @@
 var traceArray = [];
 var count = 0, checkboxVal = 0, fade = ["out", "out"], fadeUid = [0, 0];
-var sent = 0, timer = 0, width = 256, height = 256, x, y;
+var sent = 0, timer = 0, width = 256, height = 256, x, y, counter = 0;
 
 $(document).ready(function(){
     if(isMobile.any){
@@ -21,27 +21,31 @@ $(document).ready(function(){
             sent = 0;
         }
     });
+    setInterval("timer++", 1);
 });
 
 function detectMouseMove(){
     traceArray = [];
-    count = 0, timer = 0;
-    $('#radar').mousemove(function(e) {  
-        var xMouse=e.pageX;
-        var yMouse=e.pageY;
-        var id = (count - 1);
-        if(count != 0){
-            if(xMouse != traceArray[id]['0'] || yMouse != traceArray[id]['1'])
+    count = 0;
+    if(counter == 0){
+        $('#radar').mousemove(function(e) {  
+            var xMouse=e.pageX;
+            var yMouse=e.pageY;
+            var id = (count - 1);
+            if(count != 0){
+                if(xMouse != traceArray[id]['0'] || yMouse != traceArray[id]['1'])
+                    saveTrace(xMouse, yMouse);
+            } else {
                 saveTrace(xMouse, yMouse);
-        } else {
-            saveTrace(xMouse, yMouse);
-        }
-    });
+            }
+        });
+        counter++;
+    }
 }
 
 function saveTrace(x, y) {
     if(count == 0)
-        setInterval("timer++", 1);
+        timer = 0;
     var id = count++;
     traceArray[id] = {
         "x": x,
