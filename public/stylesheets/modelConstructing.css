@@ -1,0 +1,5 @@
+.flat {
+    display: flex;
+    flex-direction: raw;
+    align-items: center
+}

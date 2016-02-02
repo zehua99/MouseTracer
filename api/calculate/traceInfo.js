@@ -13,6 +13,6 @@ module.exports = function(euclideanStep, traceArray){
         stdDeviationOfAS += Math.pow((angleStep[t] - (sumOfAS / (traceArray.length - 1))), 2);
     }
     // console.log("stdDoES:" + stdDeviationOfES, "stdDoAS:" + stdDeviationOfAS);
-    var callbackData = [euclideanStep, angleStep, stdDeviationOfES, stdDeviationOfAS, sumOfES, sumOfAS, traceArray[traceArray.length - 1].time - 1, traceArray.length];
+    var callbackData = [euclideanStep, angleStep, stdDeviationOfES, stdDeviationOfAS, sumOfES, sumOfAS, traceArray[traceArray.length - 1].time - 1];
     return callbackData;
 }

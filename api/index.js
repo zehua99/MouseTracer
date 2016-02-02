@@ -14,11 +14,11 @@ router.get('/', function(req, res, next) {
 //  TODO: 把pipeline改成multi以保证安全性
 router.post('/verify', function(req, res, next) {
     var callbackSet = preCheck(req.body.traceArray, req.body.width, req.body.height);
-    var euclideanStep = callbackSet[0];
-    var traceArray = callbackSet[1];
-    if(!euclideanStep){
+    if(!callbackSet){
         res.send("Something wrong.").end();
     } else {
+        var euclideanStep = callbackSet[0];
+        var traceArray = callbackSet[1];
         var ansOfCalcu = traceInfo(euclideanStep, traceArray);
         var redis = new Redis();
         checkIP(ansOfCalcu, req.ip, redis, function(err, ansOfCheckIP) {

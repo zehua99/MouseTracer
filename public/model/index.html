@@ -1,0 +1,26 @@
+<!Doctype html>
+<html>
+    <head>
+        <title>中国人民的好朋友烈士榜</title>
+        <link rel="stylesheet" href="../stylesheets/material.min.css">
+        <link rel="stylesheet" href="../stylesheets/modelConstructing.css">
+    </head>
+    <body>
+        <div class="flat">
+            <form action="#">
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="text" id="trace_id">
+                    <label class="mdl-textfield__label" for="moment">输入你想添加的可信轨迹</label>
+                    <span class="mdl-textfield__error">你输入的不是数！</span>
+                </div>
+            </form>
+            <p>&nbsp</p>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="addCredibleTraces()">
+                添加
+            </button>
+        </div>
+        <script src="../javascripts/jquery-2.1.4.js"></script>
+        <script src="../javascripts/material.min.js"></script>
+        <script src="../javascripts/modelConstructing.js"></script>
+    </body>
+</html>
