@@ -57,10 +57,18 @@ router.post('/verify', function(req, res, next) {
                     });
                     pipeline.incr("counter")
                             .exec(function(err, values){
-                        getCredibility(ansOfCalcu, redis, function(credibility){
-                            console.log(credibility);
-                            res.send(["这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的可信度(0为最高)为" + credibility, key]).end();
-                        });
+                        var pipeline_3 = redis.pipeline();
+                        pipeline_3.llen("credible_trace").llen("credible_trace_to_be_tested").exec(function(err, values){
+                            if(values[0][1] != 0 && values[1][1] != 0)
+                                getCredibility(ansOfCalcu, redis, function(credibility){
+                                    console.log(credibility);
+                                    res.send(["这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的可信度(0为最高)为" + credibility, key]).end();
+                                });
+                            else {
+                                res.send(["这是我们的第" + ++counter + "条轨迹", key]).end();
+                            }
+                        })
+                        
                     });
                 });
             });
