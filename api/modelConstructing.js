@@ -1,7 +1,9 @@
+"use strict";
+
 var express = require('express');
 var router = express.Router();
 var Redis = require('ioredis');
-var preCheck = require('./calculate/preliminaryCheck');
+var getDissimilarity = require('./calculate/getDissimilarity');
 
 router.post('/addCredibleTraces', function(req, res, next) {
     var redis = new Redis();
@@ -16,8 +18,42 @@ router.post('/addCredibleTraces', function(req, res, next) {
     });
 });
 
-router.get('/constructModel', function(req, res, next) {
-    
+router.get('/construct', function(req, res, next) {
+    var redis = new Redis();
+    var u = 0, theta2 = 0;
+    redis.llen("credible_to_be_test_trace", function(err, count1) {
+        redis.lrange("credible_to_be_test_trace", 0, count1 - 1, function(err, set1) {
+            redis.llen("credible_trace", function(err, count2) {
+                redis.lrange("credible_trace", 0, count2 - 1, function(err, set2){
+                    var dissimilarityArray = [];
+                    for(let i = 0; i < count1; i++){
+                        redis.hget(set1[i], "details", function(err, detail1){
+                            let dissimilarityArrayOfOne = [];
+                            for(let t = 0; t < count2; t++){
+                                redis.hget(set2[t], "details", function(err, detail2){
+                                    dissimilarityArrayOfOne[t] = getDissimilarity(JSON.parse(detail1), JSON.parse(detail2));
+                                    if(t == count2 - 1){
+                                        dissimilarityArray[i] = Math.max.apply(null, dissimilarityArrayOfOne);
+                                        u += dissimilarityArray[i]
+                                    }
+                                    if(i == count1 - 1 && t == count2 - 1){
+                                        for(var n = 0; n < count1; n++){
+                                            theta2 += (1 / count1) * Math.pow(dissimilarityArray[i] - u, 2);
+                                        }
+                                        var pipeline = redis.pipeline();
+                                        pipeline.set("u", u).set("theta2", theta2);
+                                        pipeline.exec(function(err, values){
+                                            res.send(u + " and " + theta2);
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    });
 });
 
 module.exports = router;
