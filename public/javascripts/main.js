@@ -1,5 +1,5 @@
 var traceArray = [];
-var count = 0, checkboxVal = 0, fade = ["out", "out"], fadeUid = [0, 0];
+var count = -1, checkboxVal = 0, fade = ["out", "out"], fadeUid = [0, 0];
 var sent = 0, timer = 0, width = 256, height = 256, x, y, counter = 0, callbackSet = [];
 
 $(document).ready(function(){
@@ -34,7 +34,7 @@ function detectMouseMove(){
             var xMouse=e.pageX;
             var yMouse=e.pageY;
             var id = (count - 1);
-            if(count != 0){
+            if(count > 0){
                 if(xMouse != traceArray[id]['0'] || yMouse != traceArray[id]['1'])
                     saveTrace(xMouse, yMouse);
             } else {
@@ -46,14 +46,17 @@ function detectMouseMove(){
 }
 
 function saveTrace(x, y) {
-    if(count == 0)
-        timer = 0;
-    var id = count++;
-    traceArray[id] = {
-        "x": x,
-        "y": y,
-        "time": timer
-    };
+    count++;
+    if(count != 0){
+        if(count == 1)
+            timer = 0
+        var id = (count - 1);
+        traceArray[id] = {
+            "x": x,
+            "y": y,
+            "time": timer
+        };
+    }
 }
 
 function sendTraceArray() {
