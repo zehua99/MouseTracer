@@ -32,6 +32,10 @@
     justify-content: flex-start;
     height: auto
 }
+.two-boys {
+    display: flex;
+    flex-direction: column
+}
 
 .blank {
     height: 5px

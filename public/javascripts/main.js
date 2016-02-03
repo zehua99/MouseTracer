@@ -74,12 +74,16 @@ function sendTraceArray() {
                 data: JSON.stringify(allData), 
                 success: function(callBackData) {
                     console.log(callBackData);
+                    if(callBackData.length != 2){
+                        $("#callback-massage").html(callBackData);
+                    } else {
+                        $("#callback-massage").html(callBackData[0]);
+                        callbackSet[callbackSet.length] = callBackData[1];
+                        $("#set").val(JSON.stringify(callbackSet));
+                    }
                     $("#tooltip").html('客官请多验证几次吧(什么');
                     fadeIO("in", "#tooltip-box", 0);
-                    $("#callback-massage").html(callBackData[0]);
                     fadeIO("in", "#callback-box", 1);
-                    callbackSet[callbackSet.length] = callBackData[1];
-                    $("#set").html('哟！欢迎来帮我们增加可信的鼠标轨迹数据！</br>先勾选“我不是机器人”再点击验证按钮，乃的鼠标轨迹就被我们记录下来啦！如果愿意的话，你还可以重新勾选，再多录几次。</br>结束录入后请把下面的信息复制给我们噢：</br>' + JSON.stringify(callbackSet));
                 }
             });
         } else {
