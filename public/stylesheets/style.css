@@ -24,6 +24,15 @@
     justify-content: center
 }
 
+.set-card.mdl-card {
+    display: flex;
+    width: 256px;
+    min-height: 0px;
+    background: ghostwhite;
+    justify-content: flex-start;
+    height: auto
+}
+
 .blank {
     height: 5px
 }
@@ -70,4 +79,17 @@
 
 .flex-fill {
   flex: 1;
+}
+
+.two {
+    display: flex;
+    flex-direction: column;
+    width: 256px
+}
+
+.beside {
+    display: flex;
+    flex-direction: row;
+    width: 522px;
+    justify-content: space-between
 }

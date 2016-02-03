@@ -37,6 +37,7 @@ router.get('/construct', function(req, res, next) {
                                         u += dissimilarityArray[i]
                                     }
                                     if(i == count1 - 1 && t == count2 - 1){
+                                        u /= count1;
                                         for(var n = 0; n < count1; n++){
                                             theta2 += (1 / count1) * Math.pow(dissimilarityArray[i] - u, 2);
                                         }

@@ -7,33 +7,42 @@
     </head>
     <body>
         <div id="orig" style="width:0px; height:0px"/>
-        <div class="demo-card-event mdl-card mdl-shadow--2dp" id="radar">
-            <div class="flex flex-column flex-align-stretch item mdl-card__title mdl-card--expand">
-                <div class="flex flex-row flex-align-start flex-justify-start flex-fill" id="verification_checkbox">
-                    <div>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox">
-                        <input type="checkbox" id="checkbox" class="mdl-checkbox__input">
-                        </label>
+        <div class="beside">
+            <div class="two">
+                <div class="demo-card-event mdl-card mdl-shadow--2dp" id="radar">
+                    <div class="flex flex-column flex-align-stretch item mdl-card__title mdl-card--expand">
+                        <div class="flex flex-row flex-align-start flex-justify-start flex-fill" id="verification_checkbox">
+                            <div>
+                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox">
+                                <input type="checkbox" id="checkbox" class="mdl-checkbox__input">
+                                </label>
+                            </div>
+                            <span class="flex-fill mdl-checkbox__label">我不是机器人</span>
+                        </div>
+                        <div class="flex flex-column flex-align-end" id="verification_button">
+                            <button class="second-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="sendTraceArray()">
+                            验证
+                            </button>
+                        </div>
                     </div>
-                    <span class="flex-fill mdl-checkbox__label">我不是机器人</span>
                 </div>
-                <div class="flex flex-column flex-align-end" id="verification_button">
-                    <button class="second-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="sendTraceArray()">
-                    验证
-                    </button>
+                <div class="blank"></div>
+                <div class="tooltip-card mdl-card mdl-shadow--2dp" id="tooltip-box">
+                    <div class="mdl-card__title mdl-card--expand">
+                        <span id="tooltip"></span>
+                    </div>
+                </div>
+                <div class="blank"></div>
+                <div class="tooltip-card mdl-card mdl-shadow--2dp" id="callback-box">
+                    <div class="mdl-card__title mdl-card--expand">
+                        <span id="callback-massage"></span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="blank"></div>
-        <div class="tooltip-card mdl-card mdl-shadow--2dp" id="tooltip-box">
-            <div class="mdl-card__title mdl-card--expand">
-                <span id="tooltip"></spam>
-            </div>
-        </div>
-        <div class="blank"></div>
-        <div class="tooltip-card mdl-card mdl-shadow--2dp" id="callback-box">
-            <div class="mdl-card__title mdl-card--expand">
-                <span id="callback-massage"></spam>
+            <div class="set-card mdl-card mdl-shadow--2dp" id="set-box">
+                <div class="set mdl-card__title">
+                    <span id="set">哟！欢迎来帮我们增加可信的鼠标轨迹数据！</br>先勾选“我不是机器人”再点击验证按钮，乃的鼠标轨迹就被我们记录下来啦！如果愿意的话，你还可以重新勾选，再多录几次。</br>请把下面的信息复制给我们噢：</spam>
+                </div>
             </div>
         </div>
         <script src="javascripts/jquery-2.1.4.js"></script>

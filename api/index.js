@@ -4,7 +4,8 @@ var Redis = require('ioredis');
 var preCheck = require('./calculate/preliminaryCheck');
 var traceInfo = require('./calculate/traceInfo');
 var getDissimilarity = require('./calculate/getDissimilarity');
-var checkIP = require('./calculate/checkIP.js')
+var checkIP = require('./calculate/checkIP.js');
+var getCredibility = require('./calculate/getCredibility');
 
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
@@ -20,46 +21,50 @@ router.post('/verify', function(req, res, next) {
         var euclideanStep = callbackSet[0];
         var traceArray = callbackSet[1];
         var ansOfCalcu = traceInfo(euclideanStep, traceArray);
-        var redis = new Redis();
-        checkIP(ansOfCalcu, req.ip, redis, function(err, ansOfCheckIP) {
-            console.log(ansOfCheckIP);
-            redis.get("counter", function(err, counter) {
-                if (err) throw(err);
-                var key = "trace:" + counter;
-                var pipeline = redis.pipeline();
-                pipeline.hset(key, "trace", JSON.stringify(traceArray))
-                        .hset(key, "ip", req.ip)
-                        .hset(key, "req_headers", JSON.stringify(req.headers))
-                        .hset(key, "timestamp", Date.now())
-                        .hset(key, "details", JSON.stringify(ansOfCalcu));
-                pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
-                    var pipeline_1 = redis.pipeline();
-                    if(!value){
-                        // 在ip列表里面登记一下
-                        pipeline_1.hget("client_ip_set", "counter", function(err, value){
-                            var pipeline_2 = redis.pipeline();
-                            pipeline_2.hset("client_ip_set", "ip_id:" + value, req.ip)
-                                      .hincrby("client_ip_set", "counter", 1)
-                                      .exec();
+        if(ansOfCalcu == 0){
+            res.send("Something wrong.").end();
+        } else {
+            var redis = new Redis();
+            checkIP(ansOfCalcu, req.ip, redis, function(err, ansOfCheckIP) {
+                console.log("CheckIP: ", ansOfCheckIP);
+                redis.get("counter", function(err, counter) {
+                    if (err) throw(err);
+                    var key = "trace:" + counter;
+                    var pipeline = redis.pipeline();
+                    pipeline.hset(key, "trace", JSON.stringify(traceArray))
+                            .hset(key, "ip", req.ip)
+                            .hset(key, "req_headers", JSON.stringify(req.headers))
+                            .hset(key, "timestamp", Date.now())
+                            .hset(key, "details", JSON.stringify(ansOfCalcu));
+                    pipeline.hget("client_ip:" + req.ip, "counter", function(err, value){
+                        var pipeline_1 = redis.pipeline();
+                        if(!value){
+                            // 在ip列表里面登记一下
+                            pipeline_1.hget("client_ip_set", "counter", function(err, value){
+                                var pipeline_2 = redis.pipeline();
+                                pipeline_2.hset("client_ip_set", "ip_id:" + value, req.ip)
+                                        .hincrby("client_ip_set", "counter", 1)
+                                        .exec();
+                            });
+                            // 初始化
+                            pipeline_1.hset("client_ip:" + req.ip, "counter", 0);
+                            value = 0;
+                        }
+                        pipeline_1.hset("client_ip:" + req.ip, "key:" + value, "trace:" + counter)
+                                .hset(key, "ip_key", "key:" + value)
+                                .hincrby("client_ip:" + req.ip, "counter", 1)
+                                .exec();
+                    });
+                    pipeline.incr("counter")
+                            .exec(function(err, values){
+                        getCredibility(ansOfCalcu, redis, function(credibility){
+                            console.log(credibility);
+                            res.send(["这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的可信度(0为最高)为" + credibility, key]).end();
                         });
-                        // 初始化
-                        pipeline_1.hset("client_ip:" + req.ip, "counter", 0);
-                        value = 0;
-                    }
-                    pipeline_1.hset("client_ip:" + req.ip, "key:" + value, "trace:" + counter)
-                              .hset(key, "ip_key", "key:" + value)
-                              .hincrby("client_ip:" + req.ip, "counter", 1)
-                              .exec();
-                });
-                pipeline.incr("counter")
-                        .exec(function(err, values){
-                    // 开始验证
-                    
-                    
-                    res.send("这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的欧氏距离方差为" + ansOfCalcu[2]).end();
+                    });
                 });
             });
-        });  
+        }
     }
 });
 
