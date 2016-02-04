@@ -28,14 +28,13 @@ $(document).ready(function(){
 
 function detectMouseMove(){
     traceArray = [];
-    count = 0;
+    count = -1;
     if(counter == 0){
         $('#radar').mousemove(function(e) {  
             var xMouse=e.pageX;
             var yMouse=e.pageY;
-            var id = (count - 1);
             if(count > 0){
-                if(xMouse != traceArray[id]['0'] || yMouse != traceArray[id]['1'])
+                if(xMouse != traceArray[count - 1]['0'] || yMouse != traceArray[count - 1]['1'])
                     saveTrace(xMouse, yMouse);
             } else {
                 saveTrace(xMouse, yMouse);
@@ -46,16 +45,19 @@ function detectMouseMove(){
 }
 
 function saveTrace(x, y) {
-    count++;
-    if(count != 0){
-        if(count == 1)
-            timer = 0
-        var id = (count - 1);
-        traceArray[id] = {
+    if(count == -1){
+        count++;
+        timer = 0;
+    }
+    if(count != -1 && timer > 1){
+        if(count == 0)
+            timer = 0;
+        traceArray[count] = {
             "x": x,
             "y": y,
             "time": timer
         };
+        count++;
     }
 }
 
