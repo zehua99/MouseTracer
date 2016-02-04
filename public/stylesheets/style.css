@@ -30,11 +30,11 @@
     min-height: 0px;
     background: ghostwhite;
     justify-content: flex-start;
-    height: auto
+    height: 256px
 }
 .two-boys {
     display: flex;
-    flex-direction: column
+    flex-direction: column;
 }
 
 .blank {
