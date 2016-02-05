@@ -14,9 +14,11 @@ $(document).ready(function(){
     $("#set").html('哟！欢迎来帮我们增加可信的鼠标轨迹数据！</br>先勾选“我不是机器人”再点击验证按钮，乃的鼠标轨迹就被我们记录下来啦！如果愿意的话，你还可以重新勾选，再多录几次。</br>结束录入后请把下面的信息复制给我们噢：</br>' + JSON.stringify(callbackSet))
     $("#checkbox").click(function(){
         if(checkboxVal == 0){
+            $("#the_button").attr("disabled", false);
             detectMouseMove();
             checkboxVal = 1;
         }else{
+            $("#the_button").attr("disabled", true);
             checkboxVal = 0;
             $("#tooltip").html('你难道是机器人!?');
             fadeIO("in", "#tooltip-box", 0);
