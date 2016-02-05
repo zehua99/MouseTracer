@@ -67,6 +67,8 @@ function sendTraceArray() {
         fadeIO("in", "#tooltip-box", 0);
     } else {
         if(checkboxVal == 1 && !isMobile.any){
+            $("#the_button").attr("disabled", true);
+            $("#loading_spinner").attr("class", "mdl-spinner mdl-js-spinner is-active is-upgraded");
             sent = 1;
             var allData = new Object();
             allData.traceArray = traceArray;
@@ -86,6 +88,8 @@ function sendTraceArray() {
                         callbackSet[callbackSet.length] = callBackData[1];
                         $("#set").val(JSON.stringify(callbackSet));
                     }
+                    $("#the_button").attr("disabled", false);
+                    $("#loading_spinner").attr("class", "mdl-spinner mdl-js-spinner is-upgraded");
                     $("#tooltip").html('客官请多验证几次吧(什么');
                     fadeIO("in", "#tooltip-box", 0);
                     fadeIO("in", "#callback-box", 1);

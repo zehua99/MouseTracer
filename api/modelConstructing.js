@@ -21,8 +21,8 @@ router.post('/addCredibleTraces', function(req, res, next) {
 router.get('/construct', function(req, res, next) {
     var redis = new Redis();
     var u = 0, theta2 = 0;
-    redis.llen("credible_to_be_test_trace", function(err, count1) {
-        redis.lrange("credible_to_be_test_trace", 0, count1 - 1, function(err, set1) {
+    redis.llen("credible_trace_to_be_tested", function(err, count1) {
+        redis.lrange("credible_trace_to_be_tested", 0, count1 - 1, function(err, set1) {
             redis.llen("credible_trace", function(err, count2) {
                 redis.lrange("credible_trace", 0, count2 - 1, function(err, set2){
                     var dissimilarityArray = [];
@@ -53,6 +53,23 @@ router.get('/construct', function(req, res, next) {
                     }
                 });
             });
+        });
+    });
+});
+
+router.post("/add", function(req, res, next) {
+    var redis = new Redis();
+    var pipeline = redis.pipeline();
+    var pipeline_1 = redis.pipeline();
+    for(let i = 0; i < req.body.set.length; i++){
+        pipeline.hget(req.body.set[i], "details", function(err, value){
+            if(value)
+                pipeline_1.rpush("credible_trace", req.body.set[i]);
+        });
+    }
+    pipeline.exec(function(err, values){
+        pipeline_1.exec(function(err, values){
+            res.send(values);
         });
     });
 });
