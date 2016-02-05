@@ -79,12 +79,12 @@ function sendTraceArray() {
                 type: 'POST',
                 contentType: "application/json; charset=UTF-8",
                 data: JSON.stringify(allData), 
-                success: function(callBackData) {
+                success: function(callBackData, textStatus, headers) {
                     console.log(callBackData);
                     if(callBackData.length != 2){
                         $("#callback-massage").html(callBackData);
                     } else {
-                        $("#callback-massage").html(callBackData[0]);
+                        $("#callback-massage").html(callBackData[0] + "</br>后端响应时间共为" + headers.getResponseHeader("X-Response-Time"));
                         callbackSet[callbackSet.length] = callBackData[1];
                         $("#set").val(JSON.stringify(callbackSet));
                     }
