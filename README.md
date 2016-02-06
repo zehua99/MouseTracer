@@ -11,21 +11,29 @@
 - Redis 3.0+
 
 ###Linux 上的安装###
-1.  将Repository Clone到本地
-        git clone https://github.com/incrediblink/MouseTracer.git
-2.  安装需要的包
-        npm install
-3.  安装进程监控程序 pm2
-        npm install -g pm2
-        pm2 start bin/www
-        pm2 startup
+```
+git clone https://github.com/incrediblink/MouseTracer.git
+npm install
+npm install -g pm2
+pm2 start bin/www
+pm2 startup
+```
 
 ###使用###
-1.  添加可信任的轨迹
-        POST example.com/model/add traces
-其中，traces 为 Json 格式的数组，数组内只需要有轨迹的名称，如：
-        {"set": [trace:0, trace:1, trace:2]}
-2.  添加可信任的待测轨迹
-        POST example.com/model/add/test traces
-3.  建立模型
-        GET example.com/model/construct
+-  添加可信任的轨迹
+```
+POST example.com/model/add traces
+```
+    其中，traces 为 Json 格式的数组，数组内只需要有轨迹的名称，如：
+```
+{"set": [trace:0, trace:1, trace:2]}
+```
+-  添加可信任的待测轨迹
+```
+POST example.com/model/add/test traces
+```
+-  建立模型
+```
+GET example.com/model/construct
+```
+    在建立模型之前，验证码不会返回可信度。
