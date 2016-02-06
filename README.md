@@ -24,7 +24,11 @@ pm2 startup
 ```
 POST example.com/model/add traces
 ```
+<<<<<<< HEAD
 其中，traces 为 Json 格式的数组，数组内只需要有轨迹的名称，如：
+=======
+    其中，traces 为 Json 格式的数组，数组内只需要有轨迹的名称，如：
+>>>>>>> origin/master
 ```
 {"set": [trace:0, trace:1, trace:2]}
 ```
@@ -36,4 +40,8 @@ POST example.com/model/add/test traces
 ```
 GET example.com/model/construct
 ```
+<<<<<<< HEAD
 在建立模型之前，验证码不会返回可信度。
+=======
+    在建立模型之前，验证码不会返回可信度。
+>>>>>>> origin/master
