@@ -74,4 +74,21 @@ router.post("/add", function(req, res, next) {
     });
 });
 
+router.post("/add/test", function(req, res, next) {
+    var redis = new Redis();
+    var pipeline = redis.pipeline();
+    var pipeline_1 = redis.pipeline();
+    for(let i = 0; i < req.body.set.length; i++){
+        pipeline.hget(req.body.set[i], "details", function(err, value){
+            if(value)
+                pipeline_1.rpush("credible_trace_to_be_tested", req.body.set[i]);
+        });
+    }
+    pipeline.exec(function(err, values){
+        pipeline_1.exec(function(err, values){
+            res.send(values);
+        });
+    });
+});
+
 module.exports = router;
