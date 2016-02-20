@@ -25,7 +25,7 @@ router.post('/velocity', function(req, res, next) {
             res.send("木有这条轨迹啊").end();
         } else {
             var trace = JSON.parse(value.trace);
-            var euclideanStep = JSON.parse(value.details)[2];
+            var euclideanStep = JSON.parse(value.details)[0];
             var velSet = [0], callbackSet = [[0, 0, 0]];
             for(var i = 0; i < euclideanStep.length; i++){
                 if(trace[i+1].time == trace[i].time)

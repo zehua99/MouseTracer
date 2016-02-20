@@ -91,4 +91,18 @@ router.post("/add/test", function(req, res, next) {
     });
 });
 
+router.get("/trumpDonald", function(req, res, next) {
+    var redis = new Redis();
+    redis.llen("credible_trace", function(err, value){
+        for(let i = 0; i < value; i++){
+            redis.lindex("credible_trace", i, function(err, trace){
+                redis.rpush("credible_trace_to_be_tested", trace, function(err, callback) {
+                    if(i == value - 1)
+                        res.send("Done");
+                })
+            })
+        }
+    });
+});
+
 module.exports = router;
