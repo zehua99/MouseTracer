@@ -78,3 +78,27 @@ function drawVelocity(){
         }
     });
 }
+
+function drawTrace(){
+    var ctx = canvas.getContext("2d");
+    var json = {
+        "traceId": $("#trace_id").val()
+    };
+    $.ajax({
+        url: "/visualize/trace",
+        type: 'POST',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(json), 
+        success: function(callbackData) {
+            var pointSet = JSON.parse(callbackData);
+            for(var i = 0; i < pointSet.length; i++){
+                ctx.strokeStyle = "#" + i.toString(16) + i.toString(16) + i.toString(16);
+                if(i == 0)
+                    ctx.moveTo(pointSet[i].x, pointSet[i].y);
+                if(i > 0)
+                    ctx.lineTo(pointSet[i].x, pointSet[i].y);
+            }
+            ctx.stroke();
+        }
+    });
+}

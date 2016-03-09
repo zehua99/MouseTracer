@@ -39,6 +39,18 @@ router.post('/velocity', function(req, res, next) {
     })
 });
 
+router.post('/trace', function(req, res, next) {
+    var redis = new Redis();
+    redis.hgetall("trace:" + (req.body.traceId - 1), function(err, value) {
+        if(!value.trace) {
+            res.send("木有这条轨迹啊").end();
+        } else {
+            var trace = JSON.parse(value.trace);
+            res.send(JSON.stringify(trace)).end();
+        }
+    })
+});
+
 router.post('/moment', function(req, res, next) {
     var requestMoment = req.body.moment;
     var pointSet = [], count = 0;
