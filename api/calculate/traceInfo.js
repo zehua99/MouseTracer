@@ -13,10 +13,10 @@ module.exports = function(euclideanStep, traceArray){
         sumOfES += euclideanStep[t];
         sumOfAS += angleStep[t];
     }
-    // for(var t = 0; t < traceArray.length - 1; t++){
-    //     stdDeviationOfES += Math.pow((euclideanStep[t] - (sumOfES / (traceArray.length - 1))), 2);
-    //     stdDeviationOfAS += Math.pow((angleStep[t] - (sumOfAS / (traceArray.length - 1))), 2);
-    // }
+    for(var t = 0; t < traceArray.length - 1; t++){
+        stdDeviationOfES += Math.pow((euclideanStep[t] - (sumOfES / (traceArray.length - 1))), 2);
+        stdDeviationOfAS += Math.pow((angleStep[t] - (sumOfAS / (traceArray.length - 1))), 2);
+    }
     var callbackData = [euclideanStep, angleStep, stdDeviationOfES, stdDeviationOfAS, sumOfES, sumOfAS, traceArray[traceArray.length - 1].time - 1];
     return callbackData;
-} 
+}

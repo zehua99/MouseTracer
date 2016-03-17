@@ -5,29 +5,29 @@ module.exports = function(trace1, trace2){
     var sigmaPossibility1 = Math.log(Math.pow(10, 8)), sigmaPossibility2 = Math.log(Math.pow(10, 8));
     var stdDeviationOfESOfBoth = 1;
     var stdDeviationOfASOfBoth = 1;
-    // console.log(trace1, trace2);
-    // var averageES = (trace1[4] + trace2[4]) / (trace1[6] + trace2[6]);
-    // var averageAS = (trace1[5] + trace2[5]) / (trace1[6] + trace2[6]); 
-    
-    // for(var i = 0; i < trace1[0].length; i++){
-    //     stdDeviationOfESOfBoth += Math.pow((trace1[0][i] - averageES), 2);
-    //     stdDeviationOfASOfBoth += Math.pow((trace1[1][i] - averageAS), 2);
-    // }
-    // for(var i = 0; i < trace2[0].length; i++){
-    //     stdDeviationOfESOfBoth += Math.pow((trace2[0][i] - averageES), 2);
-    //     stdDeviationOfASOfBoth += Math.pow((trace2[1][i] - averageAS), 2);
-    // }
-    // stdDeviationOfESOfBoth /= trace1[6] + trace2[6];
-    // stdDeviationOfASOfBoth /= trace1[6] + trace2[6];
+    console.log(trace1, trace2);
+    var averageES = (trace1[4] + trace2[4]) / (trace1[6] + trace2[6]);
+    var averageAS = (trace1[5] + trace2[5]) / (trace1[6] + trace2[6]); 
     
     for(var i = 0; i < trace1[0].length; i++){
-        // sigmaPossibility1 = sigmaPossibility(trace1, (trace2[2] / trace2[6]), (trace2[3] / trace2[6]), sigmaPossibility1);
-        sigmaPossibility1 = sigmaPossibility(trace1, 1, 1, sigmaPossibility1);
+        stdDeviationOfESOfBoth += Math.pow((trace1[0][i] - averageES), 2);
+        stdDeviationOfASOfBoth += Math.pow((trace1[1][i] - averageAS), 2);
+    }
+    for(var i = 0; i < trace2[0].length; i++){
+        stdDeviationOfESOfBoth += Math.pow((trace2[0][i] - averageES), 2);
+        stdDeviationOfASOfBoth += Math.pow((trace2[1][i] - averageAS), 2);
+    }
+    stdDeviationOfESOfBoth /= trace1[6] + trace2[6];
+    stdDeviationOfASOfBoth /= trace1[6] + trace2[6];
+    
+    for(var i = 0; i < trace1[0].length; i++){
+        sigmaPossibility1 = sigmaPossibility(trace1, (trace2[2] / trace2[6]), (trace2[3] / trace2[6]), sigmaPossibility1);
+        // sigmaPossibility1 = sigmaPossibility(trace1, 1, 1, sigmaPossibility1);
         sigmaPossibilityOfBoth = sigmaPossibility(trace1, stdDeviationOfESOfBoth, stdDeviationOfASOfBoth, sigmaPossibilityOfBoth);
     }
     for(var i = 0; i < trace2[0].length; i++){
-        // sigmaPossibility2 = sigmaPossibility(trace2, (trace1[2] / trace1[6]), (trace1[3] / trace1[6]), sigmaPossibility2);
-        sigmaPossibility2 = sigmaPossibility(trace2, 1, 1, sigmaPossibility2);
+        sigmaPossibility2 = sigmaPossibility(trace2, (trace1[2] / trace1[6]), (trace1[3] / trace1[6]), sigmaPossibility2);
+        // sigmaPossibility2 = sigmaPossibility(trace2, 1, 1, sigmaPossibility2);
         sigmaPossibilityOfBoth = sigmaPossibility(trace2, stdDeviationOfESOfBoth, stdDeviationOfASOfBoth, sigmaPossibilityOfBoth);
     }
     
