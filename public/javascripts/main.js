@@ -86,7 +86,7 @@ function sendTraceArray() {
                 data: JSON.stringify(allData), 
                 success: function(callBackData, textStatus, headers) {
                     console.log(callBackData);
-                    if(callBackData.length != 2){
+                    if(callBackData.length != 3){
                         $("#callback-massage").html(callBackData);
                     } else {
                         $("#callback-massage").html(callBackData[0] + "</br>后端响应时间共为" + headers.getResponseHeader("X-Response-Time"));

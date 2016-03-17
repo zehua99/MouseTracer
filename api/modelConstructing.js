@@ -22,7 +22,7 @@ router.post('/addCredibleTraces', function(req, res, next) {
 
 router.get('/construct', function(req, res, next) {
     var redis = new Redis();
-    var u = 0, theta2 = 1;
+    var u = 0, theta2 = 100;
     redis.llen("credible_trace_to_be_tested", function(err, count1) {
         redis.lrange("credible_trace_to_be_tested", 0, count1 - 1, function(err, set1) {
             redis.llen("credible_trace", function(err, count2) {
