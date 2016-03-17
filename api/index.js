@@ -26,7 +26,7 @@ router.post('/verify', function(req, res, next) {
         } else {
             var redis = new Redis();
             checkIP(ansOfCalcu, req.ip, redis, function(err, ansOfCheckIP) {
-                console.log("CheckIP: ", ansOfCheckIP);
+                // console.log("CheckIP: ", ansOfCheckIP);
                 redis.get("counter", function(err, counter) {
                     if (err) throw(err);
                     var key = "trace:" + counter;

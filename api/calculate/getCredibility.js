@@ -9,9 +9,9 @@ module.exports= function(details, redis, callback){
                 redis.hget(traces[i], "details", function(err, value){
                     dissimilaritySet[i] = getDissimilarity(details, JSON.parse(value));
                     if(i == length - 1){
+                        var dissimilarity = Math.max.apply(null, dissimilaritySet);
                         var pipeline = redis.pipeline();
                         pipeline.get("u").get("theta2").exec(function(err, values){
-                            var dissimilarity = Math.max.apply(null, dissimilaritySet);
                             var credibility = (1 / Math.sqrt(2 * Math.PI * values[1][1])) * Math.exp(-(Math.pow((dissimilarity - values[0][1]), 2)) / (2 * values[1][1]));
                             callback(credibility);
                         });

@@ -3,6 +3,8 @@
 var express = require('express');
 var router = express.Router();
 var Redis = require('ioredis');
+var preCheck = require('./calculate/preliminaryCheck');
+var traceInfo = require('./calculate/traceInfo');
 var getDissimilarity = require('./calculate/getDissimilarity');
 
 router.post('/addCredibleTraces', function(req, res, next) {
@@ -91,18 +93,21 @@ router.post("/add/test", function(req, res, next) {
     });
 });
 
-// router.get("/trumpDonald", function(req, res, next) {
-//     var redis = new Redis();
-//     redis.llen("credible_trace", function(err, value){
-//         for(let i = 0; i < value; i++){
-//             redis.lindex("credible_trace", i, function(err, trace){
-//                 redis.rpush("credible_trace_to_be_tested", trace, function(err, callback) {
-//                     if(i == value - 1)
-//                         res.send("Done");
-//                 })
-//             })
-//         }
-//     });
-// });
+router.get("/trumpDonald", function(req, res, next) {
+    var redis = new Redis();
+    redis.get("counter", function(err, counter){
+        for(let i = 0; i < counter; i++){
+            redis.hgetall("trace:" + i, function(err, value){
+                let callbackSet = preCheck(value.traceArray, 256, 256);
+                let euclideanStep = callbackSet[0];
+                let traceArray = callbackSet[1];
+                let ansOfCalcu = traceInfo(euclideanStep, traceArray);
+                redis.hset("trace:" + i, "details", JSON.stringify(ansOfCalcu));
+            });
+            if(i == counter - 1)
+                res.send("Done");
+        }
+    });
+});
 
 module.exports = router;
