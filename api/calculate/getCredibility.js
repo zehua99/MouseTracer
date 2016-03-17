@@ -13,7 +13,7 @@ module.exports= function(details, redis, callback){
                         var pipeline = redis.pipeline();
                         pipeline.get("u").get("theta2").exec(function(err, values){
                             var credibility = (1 / Math.sqrt(2 * Math.PI * values[1][1])) * Math.exp(-(Math.pow((dissimilarity - values[0][1]), 2)) / (2 * values[1][1]));
-                            callback(credibility);
+                            callback(credibility, dissimilaritySet);
                         });
                     }
                 });
