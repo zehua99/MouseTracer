@@ -1,6 +1,8 @@
 "use strict";
 
 var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var trace_id = -1;
 
 function drawMoment(){
     var ctx = canvas.getContext("2d");
@@ -80,7 +82,7 @@ function drawVelocity(){
 }
 
 function drawTrace(){
-    var ctx = canvas.getContext("2d");
+    trace_id = $("#trace_id").val() - 1
     var json = {
         "traceId": $("#trace_id").val()
     };
@@ -92,13 +94,41 @@ function drawTrace(){
         success: function(callbackData) {
             var pointSet = JSON.parse(callbackData);
             for(var i = 0; i < pointSet.length; i++){
-                ctx.strokeStyle = "#" + i.toString(16) + i.toString(16) + i.toString(16);
+                ctx.strokeStyle = "black";
                 if(i == 0)
+                    // ctx.beginPath()
                     ctx.moveTo(pointSet[i].x, pointSet[i].y);
                 if(i > 0)
                     ctx.lineTo(pointSet[i].x, pointSet[i].y);
             }
+            ctx.closePath();
             ctx.stroke();
         }
     });
+}
+
+function isHuman(bool){
+    var json = {
+        "trace": "trace:" + trace_id,
+        "isHuman": bool
+    };
+    $.ajax({
+        url: "/model/credibility/perception/add",
+        type: 'POST',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(json), 
+        success: function(callbackData) {
+            switchTrace('forward');
+        }
+    });
+}
+
+function switchTrace(direction){
+    // ctx.fillStyle = "white";
+    // ctx.fillRect(0,0,256,256);
+    if(direction == "forward")
+        $("#trace_id").val(parseInt($("#trace_id").val()) + 1);
+    else
+        $("#trace_id").val(parseInt($("#trace_id").val()) - 1);
+    drawTrace();
 }

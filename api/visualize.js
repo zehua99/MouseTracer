@@ -10,9 +10,11 @@ router.get('/all', function(req, res, next) {
    redis.get("counter", function(err, counter) {
        for(let i = 0; i < counter; i++){
            redis.hgetall("trace:" + i, function(err, trace) {
-              set[i] = trace; 
-              if(i == counter - 1)
-                  res.send(JSON.stringify(set));
+               trace.req_headers = "不告诉你";
+               trace.ip = "不告诉你";
+               set[i] = trace;
+               if(i == counter - 1)
+                   res.send(JSON.stringify(set));
            });
        }
    }) 

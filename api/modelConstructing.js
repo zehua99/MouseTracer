@@ -6,6 +6,7 @@ var Redis = require('ioredis');
 var preCheck = require('./calculate/preliminaryCheck');
 var traceInfo = require('./calculate/traceInfo');
 var getDissimilarity = require('./calculate/getDissimilarity');
+var getCredibility = require('./calculate/getCredibility');
 
 router.post('/addCredibleTraces', function(req, res, next) {
     var redis = new Redis();
@@ -93,20 +94,63 @@ router.post("/add/test", function(req, res, next) {
     });
 });
 
-router.get("/trumpDonald", function(req, res, next) {
+// router.get("/trumpDonald", function(req, res, next) {
+//     var redis = new Redis();
+//     redis.get("counter", function(err, counter){
+//         for(let i = 0; i < counter; i++){
+//             redis.hgetall("trace:" + i, function(err, value){
+//                 let callbackSet = preCheck(value.traceArray, 256, 256);
+//                 let euclideanStep = callbackSet[0];
+//                 let traceArray = callbackSet[1];
+//                 let ansOfCalcu = traceInfo(euclideanStep, traceArray);
+//                 redis.hset("trace:" + i, "details", JSON.stringify(ansOfCalcu));
+//             });
+//             if(i == counter - 1)
+//                 res.send("Done");
+//         }
+//     });
+// });
+
+router.get("/credibility/perception", function(req, res, next) {
     var redis = new Redis();
-    redis.get("counter", function(err, counter){
-        for(let i = 0; i < counter; i++){
-            redis.hgetall("trace:" + i, function(err, value){
-                let callbackSet = preCheck(value.traceArray, 256, 256);
-                let euclideanStep = callbackSet[0];
-                let traceArray = callbackSet[1];
-                let ansOfCalcu = traceInfo(euclideanStep, traceArray);
-                redis.hset("trace:" + i, "details", JSON.stringify(ansOfCalcu));
+    var threshold = Math.random(), t = 0, learningRate = 0.1;
+    redis.get("trace_for_threshold_calculation", function(err, value){
+        var traceSet = JSON.parse(value);
+        calculate(t, traceSet, calculate(t));
+    });
+    
+    function calculate(t, set, callback){
+        if(set[t].credibility * threshold > 0.5 && set[t].isHuman == 0)
+            threshold -= learningRate * set[t].credibility;
+        if(set[t].credibility * threshold < 0.5 && set[t].isHuman == 1)
+            threshold += learningRate * set[t].credibility;
+        if(t++ < set.length - 1)
+            callback();
+        else
+            res.send(threshold);
+    }
+});
+
+router.post("/credibility/perception/add", function(req, res, next) {
+    var redis = new Redis();
+    redis.hget(req.body.trace, "trace", function(err, callback){
+        // console.log(callback, req.body)
+        var callbackSet = preCheck(JSON.parse(callback), 256, 256);
+        var euclideanStep = callbackSet[0];
+        var traceArray = callbackSet[1];
+        var ansOfCalcu = traceInfo(euclideanStep, traceArray);
+        getCredibility(ansOfCalcu, redis, function(credibility){
+            redis.get("trace_for_threshold_calculation", function(err, value){
+                var traceSet = JSON.parse(value);
+                traceSet[traceSet.length] = {
+                    "credibility": credibility,
+                    "isHuman": req.body.isHuman
+                }
+                redis.set("trace_for_threshold_calculation", function(err, value){
+                    res.send("Done");
+                });
             });
-            if(i == counter - 1)
-                res.send("Done");
-        }
+        });
     });
 });
 

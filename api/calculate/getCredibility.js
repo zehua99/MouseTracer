@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports= function(details, redis, callback){
+module.exports = function(details, redis, callback){
     var getDissimilarity = require('./getDissimilarity');
     redis.llen("credible_trace", function(err, length){
         redis.lrange("credible_trace", 0, length - 1, function(err, traces){
