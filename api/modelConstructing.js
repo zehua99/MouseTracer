@@ -22,7 +22,7 @@ router.post('/addCredibleTraces', function(req, res, next) {
 
 router.get('/construct', function(req, res, next) {
     var redis = new Redis();
-    var u = 0, theta2 = 100;
+    var u = 0, theta2 = 0;
     redis.llen("credible_trace_to_be_tested", function(err, count1) {
         redis.lrange("credible_trace_to_be_tested", 0, count1 - 1, function(err, set1) {
             redis.llen("credible_trace", function(err, count2) {
@@ -40,9 +40,9 @@ router.get('/construct', function(req, res, next) {
                                     }
                                     if(i == count1 - 1 && t == count2 - 1){
                                         u /= count1;
-                                        // for(var n = 0; n < count1; n++){
-                                        //     theta2 += (1 / count1) * Math.pow(dissimilarityArray[i] - u, 2);
-                                        // }
+                                        for(var n = 0; n < count1; n++){
+                                            theta2 += (1 / count1) * Math.pow(dissimilarityArray[i] - u, 2);
+                                        }
                                         var pipeline = redis.pipeline();
                                         pipeline.set("u", u).set("theta2", theta2);
                                         pipeline.exec(function(err, values){
