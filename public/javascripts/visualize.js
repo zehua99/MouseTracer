@@ -1,7 +1,6 @@
 "use strict";
 
 var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
 var trace_id = -1;
 
 function drawMoment(){
@@ -82,6 +81,7 @@ function drawVelocity(){
 }
 
 function drawTrace(){
+    var ctx = canvas.getContext("2d");
     trace_id = $("#trace_id").val() - 1
     var json = {
         "traceId": $("#trace_id").val()
@@ -101,7 +101,6 @@ function drawTrace(){
                 if(i > 0)
                     ctx.lineTo(pointSet[i].x, pointSet[i].y);
             }
-            ctx.closePath();
             ctx.stroke();
         }
     });
@@ -124,6 +123,10 @@ function isHuman(bool){
 }
 
 function switchTrace(direction){
+    var width = canvas.width;
+    var height = canvas.height;
+    canvas.width = width;
+    canvas.height = height;
     // ctx.fillStyle = "white";
     // ctx.fillRect(0,0,256,256);
     if(direction == "forward")

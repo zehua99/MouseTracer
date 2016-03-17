@@ -146,7 +146,7 @@ router.post("/credibility/perception/add", function(req, res, next) {
                     "credibility": credibility,
                     "isHuman": req.body.isHuman
                 }
-                redis.set("trace_for_threshold_calculation", function(err, value){
+                redis.set("trace_for_threshold_calculation", JSON.stringify(traceSet), function(err, value){
                     res.send("Done");
                 });
             });
