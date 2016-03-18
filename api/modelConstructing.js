@@ -126,8 +126,11 @@ router.get("/credibility/perception", function(req, res, next) {
             threshold += learningRate * set[t].credibility;
         if(t < set.length - 1)
             calculate(++t, set);
-        else
-            res.send({"threshold": threshold});
+        else{
+            redis.set("trace_threshold", threshold, function(err, value){
+                res.send({"threshold": threshold});
+            });
+        }
     }
 });
 

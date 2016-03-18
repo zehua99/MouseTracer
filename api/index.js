@@ -61,8 +61,11 @@ router.post('/verify', function(req, res, next) {
                         pipeline_3.llen("credible_trace").llen("credible_trace_to_be_tested").exec(function(err, values){
                             if(values[0][1] != 0 && values[1][1] != 0)
                                 getCredibility(ansOfCalcu, redis, function(credibility, dissimilarity){
-                                    // console.log(credibility);
-                                    res.send(["这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的可信值为" + credibility, key, dissimilarity]).end();
+                                    redis.get("redis_threshold", function(err, threshold){
+                                        if(threshold != null)
+                                            credibility *= threshold;
+                                        res.send(["这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的可信值为" + credibility * threshold, key, dissimilarity]).end();
+                                    });
                                 });
                             else {
                                 res.send(["这是我们的第" + ++counter + "条轨迹", key]).end();
