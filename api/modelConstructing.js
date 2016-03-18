@@ -134,7 +134,6 @@ router.get("/credibility/perception", function(req, res, next) {
 router.post("/credibility/perception/add", function(req, res, next) {
     var redis = new Redis();
     redis.hget(req.body.trace, "trace", function(err, callback){
-        // console.log(callback, req.body)
         var callbackSet = preCheck(JSON.parse(callback), 256, 256);
         var euclideanStep = callbackSet[0];
         var traceArray = callbackSet[1];
@@ -146,6 +145,7 @@ router.post("/credibility/perception/add", function(req, res, next) {
                     "credibility": credibility,
                     "isHuman": req.body.isHuman
                 }
+                redis.rpush("trace_list_for_threshold_calculation", req.body.trace);
                 redis.set("trace_for_threshold_calculation", JSON.stringify(traceSet), function(err, value){
                     res.send("Done");
                 });

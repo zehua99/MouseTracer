@@ -96,7 +96,6 @@ function drawTrace(){
             for(var i = 0; i < pointSet.length; i++){
                 ctx.strokeStyle = "black";
                 if(i == 0)
-                    // ctx.beginPath()
                     ctx.moveTo(pointSet[i].x, pointSet[i].y);
                 if(i > 0)
                     ctx.lineTo(pointSet[i].x, pointSet[i].y);
@@ -124,11 +123,7 @@ function isHuman(bool){
 
 function switchTrace(direction){
     var width = canvas.width;
-    var height = canvas.height;
     canvas.width = width;
-    canvas.height = height;
-    // ctx.fillStyle = "white";
-    // ctx.fillRect(0,0,256,256);
     if(direction == "forward")
         $("#trace_id").val(parseInt($("#trace_id").val()) + 1);
     else
