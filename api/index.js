@@ -62,8 +62,7 @@ router.post('/verify', function(req, res, next) {
                             if(values[0][1] != 0 && values[1][1] != 0)
                                 getCredibility(ansOfCalcu, redis, function(credibility, dissimilarity){
                                     redis.get("redis_threshold", function(err, threshold){
-                                        if(threshold != null)
-                                            credibility *= threshold;
+                                        credibility *= threshold;
                                         res.send(["这是我们的第" + ++counter + "条轨迹</br>该鼠标轨迹的可信值为" + credibility * threshold, key, dissimilarity]).end();
                                     });
                                 });
