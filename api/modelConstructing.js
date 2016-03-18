@@ -116,16 +116,16 @@ router.get("/credibility/perception", function(req, res, next) {
     var threshold = Math.random(), t = 0, learningRate = 0.1;
     redis.get("trace_for_threshold_calculation", function(err, value){
         var traceSet = JSON.parse(value);
-        calculate(t, traceSet, calculate(t));
+        calculate(t, traceSet);
     });
     
-    function calculate(t, set, callback){
+    function calculate(t, set){
         if(set[t].credibility * threshold > 0.5 && set[t].isHuman == 0)
             threshold -= learningRate * set[t].credibility;
         if(set[t].credibility * threshold < 0.5 && set[t].isHuman == 1)
             threshold += learningRate * set[t].credibility;
-        if(t++ < set.length - 1)
-            callback();
+        if(t < set.length - 1)
+            calculate(++t, traceSet);
         else
             res.send({"threshold": threshold});
     }
