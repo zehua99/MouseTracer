@@ -113,10 +113,13 @@ router.post("/add/test", function(req, res, next) {
 
 router.get("/credibility/perception", function(req, res, next) {
     var redis = new Redis();
-    var threshold = Math.random(), t = 0, learningRate = 0.1;
-    redis.get("trace_for_threshold_calculation", function(err, value){
-        var traceSet = JSON.parse(value);
-        calculate(t, traceSet);
+    var threshold = Math.random(), t = 0, learningRate;
+    redis.get("trace_learning_rate", function(err, learning_rate){
+        learningRate = learning_rate;
+        redis.get("trace_for_threshold_calculation", function(err, value){
+            var traceSet = JSON.parse(value);
+            calculate(t, traceSet);
+        });
     });
     
     function calculate(t, set){
