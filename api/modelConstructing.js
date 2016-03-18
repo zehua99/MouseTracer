@@ -34,7 +34,7 @@ router.get('/construct', function(req, res, next) {
                             let dissimilarityArrayOfOne = [];
                             for(let t = 0; t < count2; t++){
                                 redis.hget(set2[t], "details", function(err, detail2){
-                                    dissimilarityArrayOfOne[t] = getDissimilarity(JSON.parse(detail1), JSON.parse(detail2));
+                                    dissimilarityArrayOfOne[t] = Math.abs(getDissimilarity(JSON.parse(detail1), JSON.parse(detail2)));
                                     if(t == count2 - 1){
                                         dissimilarityArray[i] = Math.max.apply(null, dissimilarityArrayOfOne);
                                         u += dissimilarityArray[i]
