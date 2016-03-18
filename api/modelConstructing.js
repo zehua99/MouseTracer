@@ -125,7 +125,7 @@ router.get("/credibility/perception", function(req, res, next) {
         if(set[t].credibility * threshold < 0.5 && set[t].isHuman == 1)
             threshold += learningRate * set[t].credibility;
         if(t < set.length - 1)
-            calculate(++t, traceSet);
+            calculate(++t, set);
         else
             res.send({"threshold": threshold});
     }
