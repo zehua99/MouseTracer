@@ -127,7 +127,7 @@ router.get("/credibility/perception", function(req, res, next) {
         if(t++ < set.length - 1)
             callback();
         else
-            res.send(threshold);
+            res.send({"threshold": threshold});
     }
 });
 
