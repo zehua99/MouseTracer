@@ -7,7 +7,7 @@ module.exports = function(details, redis, callback){
             var dissimilaritySet = [];
             for(let i = 0; i < length; i++){
                 redis.hget(traces[i], "details", function(err, value){
-                    dissimilaritySet[i] = getDissimilarity(details, JSON.parse(value));
+                    dissimilaritySet[i] = Math.abs(getDissimilarity(details, JSON.parse(value)));
                     if(i == length - 1){
                         var dissimilarity = Math.max.apply(null, dissimilaritySet);
                         var pipeline = redis.pipeline();
