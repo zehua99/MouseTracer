@@ -30,7 +30,7 @@ module.exports = function(trace1, trace2){
         // sigmaPossibility2 = sigmaPossibility(trace2, 1, 1, sigmaPossibility2);
         sigmaPossibilityOfBoth = sigmaPossibility(trace2, stdDeviationOfESOfBoth, stdDeviationOfASOfBoth, sigmaPossibilityOfBoth);
     }
-    
+    console.log(sigmaPossibility1, sigmaPossibility2, sigmaPossibilityOfBoth);
     return ((sigmaPossibility1 + sigmaPossibility2) / sigmaPossibilityOfBoth);
     
     function sigmaPossibility(trace, stdDeviationOfES, stdDeviationOfAS, sigmaPossibility){
